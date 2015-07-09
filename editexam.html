@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="description" content=""/>
+        <meta name="author" content=""/>
+        
+        <title>Thesis Examination - myAcademy</title>
+        
+        <!-- Bootstrap core CSS -->
+        <link href="css/bootstrap.css" rel="stylesheet"/>
+        <link href="css/multiple-select.css" rel="stylesheet"/>
+        
+        <!-- Add custom CSS here -->
+        <link href="css/sb-admin.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css"/>
+        <!-- Page Specific CSS -->
+        <link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css"/>
+        
+        <script type="text/javascript">
+            
+            
+            
+             function listAllExaminationsforSelect()
+            {
+                  var userID = getUserID();
+                  var request =  get_XmlHttp();	
+                  
+                  var formData = new FormData();
+                  formData.append('examinationsfunction', 'listAllExaminationsforSelect');
+                  formData.append('id', userID);
+                  
+                  request.open("POST", "php/editexam.php", true);			// define the request
+                  request.send(formData);		// sends data
+                  
+                  request.onreadystatechange = function() {
+                     if (request.readyState == 4) {
+                        document.getElementById("examselect").innerHTML = request.responseText;
+                     }
+                  }
+            }
+                                            
+           function atributtes(userID,idexam)
+           {
+           
+                   var request =  get_XmlHttp();	
+                                                  
+                   var formData = new FormData();
+                   formData.append('examinationsfunction', 'atributtes');
+                   formData.append('id', userID);
+                   formData.append('idexam', idexam);
+                                                  
+                   request.open("POST", "php/editexam.php", true);			// define the request
+                   request.send(formData);		// sends data
+                                                  
+                   request.onreadystatechange = function() {
+                   if (request.readyState == 4) {
+                          document.getElementById("attributes").innerHTML = request.responseText;
+                   }
+                   }
+           
+           }
+           
+           function student(userID, idexam)
+           {
+           
+                   var request =  get_XmlHttp();	
+                                                  
+                   var formData = new FormData();
+                   formData.append('examinationsfunction', 'student');
+                   formData.append('id', userID);
+                   formData.append('idexam', idexam);
+                                                  
+                   request.open("POST", "php/editexam.php", true);			// define the request
+                   request.send(formData);		// sends data
+                                                  
+                   request.onreadystatechange = function() {
+                   if (request.readyState == 4) {
+                          document.getElementById("student").innerHTML = request.responseText;
+                   }
+                   }
+           
+           }
+           
+           function documentx(userID, idexam)
+           {
+           
+                   var request =  get_XmlHttp();	
+                                                  
+                   var formData = new FormData();
+                   formData.append('examinationsfunction', 'document');
+                   formData.append('id', userID);
+                   formData.append('idexam', idexam);
+                                                  
+                   request.open("POST", "php/editexam.php", true);			// define the request
+                   request.send(formData);		// sends data
+                                                  
+                   request.onreadystatechange = function() {
+                   if (request.readyState == 4) {
+                          document.getElementById("document").innerHTML = request.responseText;
+                   }
+                   }
+           
+           }
+                                            
+                                            
+            function listexaminfo(idexam)
+            {
+                if(idexam=="")
+                    return;
+                 var userID = getUserID();
+                 examkeywords(idexam);
+                 atributtes(userID,idexam);
+                 student(userID, idexam);
+                 documentx(userID, idexam);
+                
+            
+            }
+            
+            function examkeywords(idexam)
+            {
+                
+                   
+                 var request =  get_XmlHttp();		// call the function for the XMLHttpRequest instance         
+                 // create the URL with data that will be sent to the server (a pair index=value)
+                 
+                  var formData = new FormData();
+                  formData.append('examinationsfunction', 'listexamkeywordsbyexam');
+                  formData.append('idexam', idexam);
+                  
+             
+                
+               
+                 request.open("POST", "php/editexam.php", true);			// define the request
+                 request.send(formData);		// sends data
+                 
+                 
+                    
+                 // Check request status
+                 // If the response is received completely, will be transferred to the HTML tag with tagID
+                 request.onreadystatechange = function() {
+                   if (request.readyState == 4) {                                   
+                       $('#keywordsselect').multipleSelect('setSelects',request.responseText.split(" "));
+                   }
+                 }   
+            
+            }
+            
+           function updateAttributes ()
+           {
+                   var request =  get_XmlHttp();	
+                                                  
+                   var formData = new FormData();
+                   
+                   var userID = getUserID();
+                   
+                   var e = document.getElementById("examselect"); // vai buscar o valor que está selecionado
+                   var idexam = e.options[e.selectedIndex].value;
+                   var k = document.getElementById("type"); // vai buscar o valor que está selecionado
+                   var type = k.options[k.selectedIndex].value;
+                   var inst = $('#inst').val();
+                   var ansidate = $('#ansiDate').val();
+                   var date = $('#date').val();
+                   
+                 
+                   
+                   var keywords = $('#keywordsselect').multipleSelect('getSelects');
+                   
+                   formData.append('keywords',keywords); 
+                                                       
+                   var query = "";
+                   
+                   if(inst.length == 0){
+                    $('#inst').focus();
+                    alert("Input is empty!");
+                    return;
+                };
+                 if(ansiDate.length == 0){
+                     $('#ansiDate').focus();
+                     alert("Input is empty!");
+                     return;
+                 };  
+                   
+                  
+                   query = "UPDATE theexam SET inst='"+inst+"', date='"+date+"', ansi='"+ansidate+"', type='"+type+"' where idtheexam ='"+idexam+"';";
+                       
+                   formData.append('examinationsfunction', 'updateAtributtes');
+                   formData.append('query', query);
+                   formData.append('idexam', idexam);
+                                                  
+                   request.open("POST", "php/editexam.php", true);			// define the request
+                   request.send(formData);		// sends data
+                                                  
+                   request.onreadystatechange = function() {
+                   if (request.readyState == 4) {
+                           atributtes(userID,idexam);
+                          document.getElementById("alert1").innerHTML = request.responseText;
+                   }
+                   }
+           
+           }
+           
+              function updateStudent()
+           {
+                   var request =  get_XmlHttp();	
+                                                  
+                   var formData = new FormData();
+                   
+                   var userID = getUserID();
+                   
+                   var e = document.getElementById("examselect"); // vai buscar o valor que está selecionado
+                   var idexam = e.options[e.selectedIndex].value;
+                   
+                   var name = $('#name').val();
+                   var number = $('#number').val();
+                   var email = $('#email').val();    
+                   var linkedin = $('#linkedin').val();    
+                   var description = $('#description').val();
+                   var address = $('#address').val();       
+                    
+                   
+                       if(name.length == 0){
+                         $('#name').focus();
+                         alert("Input is empty!");
+                         return;
+                        }; 
+                        
+                         if(number.length == 0){
+                         $('#number').focus();
+                         alert("Input is empty!");
+                         return;
+                        };   
+                        
+                   formData.append('examinationsfunction', 'updatestudent');
+                   formData.append('id', userID);
+                   formData.append('idexam', idexam);
+                   formData.append('name', name);
+                   formData.append('email', email);
+                   formData.append('linkedin', linkedin);
+                   formData.append('description', description);
+                   formData.append('address', address);
+                   formData.append('number', number);
+                   
+                   
+                                                  
+                   request.open("POST", "php/editexam.php", true);			// define the request
+                   request.send(formData);		// sends data
+                                                  
+                   request.onreadystatechange = function() {
+                   if (request.readyState == 4) {
+                          student(userID, idexam);
+                          document.getElementById("alert2").innerHTML = request.responseText;
+                   }
+                   }
+                      
+           }
+           
+           function updateDocument()
+           {
+                var userID = getUserID();
+                var request =  get_XmlHttp();	
+                                                  
+                var formData = new FormData();
+                
+                var e = document.getElementById("examselect"); // vai buscar o valor que está selecionado
+                var idexam = e.options[e.selectedIndex].value;
+                var filetitle = $('#filetitle').val();  
+                var file = document.getElementById('file');
+                var doi = $('#doi').val();   
+                
+                
+                formData.append('examinationsfunction', 'updatedocumentbyExam');
+                formData.append('idexam', idexam);
+                formData.append('filetitle',filetitle);
+                formData.append('file', file.files[0]);
+                formData.append('doi',doi);
+                formData.append('type',"thesis");
+                
+                                                    
+                request.open("POST", "php/editexam.php", true);			// define the request
+                request.send(formData);		// sends data
+                                                  
+                request.onreadystatechange = function() {
+                if (request.readyState == 4) {
+                     listAllExaminationsforSelect();
+                     documentx(userID, idexam);
+                     document.getElementById("alert3").innerHTML = request.responseText;
+                }
+                }
+            
+            
+           }
+            
+            
+        </script>
+    </head>
+    
+   
+    <body  onload = "isAdmin(), getCookie(), listAllExaminationsforSelect(), adddkeywords_form('php/content.php', 'keywordsselect', 'keywords_form');" >
+        <div id="wrapper">
+            
+            <!-- Sidebar -->
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">myAcademy</a>
+                </div>
+                
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav side-nav">
+                        <li><a href="myprofile.html"><i class="fa fa-user"></i> Personal Information</a></li>
+                        
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" id="dmopen"><i class="fa fa-book"></i> Publications <b class="caret"></b></a>              
+                            <ul class="dropdown-menu">
+                                <li><a href="publications.html"><i class="fa fa-list"></i> List</a></li>
+                                <li><a href="addpublication.html"><i class="fa fa-plus"></i> Insert</a></li>
+                                <li><a href="editpublication.html"><i class="fa fa-edit"></i> Edit</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-eye"></i> Thesis Examination <b class="caret"></b></a>              
+                            <ul class="dropdown-menu collapse in">
+                                <li><a href="theexam.html"><i class="fa fa-list"></i> List</a></li>
+                                <li><a href="addexam.html"><i class="fa fa-plus"></i> Insert</a></li>
+                                <li><a class="active" href="editexam.html"><i class="fa fa-edit"></i> Edit</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-road"></i> Thesis Supervision <b class="caret"></b></a>              
+                            <ul class="dropdown-menu"  >
+                                <li><a href="thesup.html"><i class="fa fa-list"></i> List</a></li>
+                                <li><a href="addsup.html"><i class="fa fa-plus"></i> Insert</a></li>
+                                <li><a href="editsup.html"><i class="fa fa-edit"></i> Edit</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-tasks"></i> Teaching <b class="caret"></b></a>              
+                            <ul class="dropdown-menu">
+                                <li><a href="teaching.html"><i class="fa fa-list"></i> List courses</a></li>
+                                <li><a href="disciplines.html"><i class="fa fa-edit"></i> Disciplines</a></li>
+                                <li><a href="content.html"><i class="fa fa-file"></i> Content</a></li>                                
+                            </ul>
+                        </li>
+                        
+                        <li class="dropdown" id="adminpanel">              
+                        </li>
+                    </ul>
+                    
+                    <!-- User toolbar -->
+                    <ul class="nav navbar-nav navbar-right navbar-user">                        
+                        <li class="dropdown user-dropdown"  id="dyn_user">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="myprofile.html"><i class="fa fa-user"></i> Profile</a></li>
+                                <li><a href="editprofile.html"><i class="fa fa-edit"></i> Edit Personal Info </a></li>              
+                                <li class="divider"></li>
+                                <li><a href="#"><i class="fa fa-power-off"></i> Log Out</a></li>
+                                <li><a href="#"><i class="fa fa-question"></i> Support</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </nav>
+            
+            <div id="page-wrapper">
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1>Thesis Examination  <small>Edit your examinations</small></h1>
+                        <ol class="breadcrumb">              
+                        </ol>           
+                    </div>
+                </div><!-- /.row -->
+                
+                <div class="row">
+                    
+                    <div class="col-lg-12"> 
+                        <form role="form" action="php/theexam.php" method="post" enctype="multipart/form-data" id="examination" >           
+                            
+                            <!-- ____________________________________Thesis Examination________________________________________ -->            
+                            
+                            <legend class="text-left">Attributes</legend>
+                            
+                            <div class="col-lg-8" id="attributes" >
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label>Institution</label>            
+                                        <input class="form-control" name="inst" id="inst" type="text" required=""/>                                  
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row">
+                                    <div class="col-lg-2">
+                                        <label>Degree</label>            
+                                        <select class="form-control" name="type" id="type">    
+                                            <option value="msc">MSc</option>
+                                            <option value="phd">PhD</option>                
+                                        </select>                                                
+                                    </div>
+                                    
+                                    <label for="ansiDate">Date</label>
+                                    <div class="form-inline">             
+                                        <div class="form-group"> 
+                                            <input id="ansiDate" class="form-control" name="ansiDate" type="date" placeholder="dd-mm-aaaa" required=""/>
+                                        </div>
+                                        <div class="form-group"> 
+                                            <input class="form-control" name="date" id="date" type="text" placeholder="Ex: July 2013" />
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-lg-6">             
+                                        
+                                    </div>     
+                                </div> 
+                                <br/>
+                               
+                                <br/>
+                            </div>
+                            
+                            
+                            <div class="col-lg-4">
+                             <div class="form-group">
+                               
+                                 <select id='examselect' class="form-control" multiple="" style="height: 200px;" onchange="listexaminfo(this.value)">
+                                     
+                                 </select>
+                             </div>  
+                                <div class="text-right">
+                                    <button class="btn btn-danger btn-xs" type="button" onclick="asktoremove(getElementById('usersselect').value)">
+                                        - Remove
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-lg-8">  
+                                <div class="col-lg-6">                                    
+                                    <label for="keywordsselect">Keywords</label>
+                                    <select class="form-control" id="keywordsselect" multiple="multiple">                                                                             
+                                    </select> 
+                                   
+                                </div>
+                                  
+                                </div>
+                                
+                            </div>
+                            
+                            <div class="col-lg-8">
+                            <div class="row">
+                                <div class="col-lg-8 text-right">
+                                    <button class="btn btn-info btn-xs" type="button" onclick="updateAttributes()">
+                                        * Update
+                                    </button>
+                                </div>
+                            </div>
+                            </div>
+                            
+                            <div class="col-lg-6" id="alert1"></div>
+                            
+                            <br/>
+                            <!--            Student           --> 
+                            <br></br>
+                            <legend class="text-left">Student</legend>
+                            
+                            <div class="col-lg-8" id="student">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <label for="name">Name</label>
+                                        <input id="name" name="name" class="form-control" type="text" required=""/>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label for="number">Number</label>
+                                        <input id="number" name="number" class="form-control" type="text"/>
+                                    </div>
+                                </div>
+                                
+                                <br/>
+                                <a id="click">Click here to add more info about the student</a>
+                                <br/>
+                                
+                                <div id="program">            
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <label>Email</label>
+                                            <input name="email" id="email" class="form-control" type="text"/>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <label>Linkedin</label>
+                                            <input name="linkedin" id="linkedin" class="form-control" type="text"/>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-lg-7">
+                                            <label>Info about the course</label>
+                                            <input name="description" id="description" class="form-control" type="text" placeholder="ex: MIECOM - Universidade do Minho"/>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-lg-5">
+                                            <label>Website</label>                
+                                            <input name="address" id="address" class="form-control" type="text" placeholder="ex: mecom.eng.uminho.pt"/>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                
+                                
+                                
+                                <br/>
+                            </div>
+                            
+                            <div class="col-lg-8">
+                                <div class="row">
+                                    <div class="col-lg-8 text-right">
+                                        <button class="btn btn-info btn-xs" type="button" onclick="updateStudent()">
+                                            * Update
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                           
+                            <div class="col-lg-6" id="alert2"></div>
+                            
+                            <!--            Document          -->
+                            <legend class="text-left">Document</legend>  
+                            <div class="col-lg-8" id="document">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label for="filetitle">Title</label>
+                                    <input type="text" placeholder="Title" id="filetitle" name="filetitle" class="form-control"/>
+                                </div>
+                            </div>
+                            <br/>
+                            </div>
+                            <div class="col-lg-8" id="documentdinamic">
+                            <a onclick="$('#uploadfile').show(),$('#link').hide()">Click here to upload file</a><a onclick="$('#uploadfile').hide(),$('#link').show()"> or here to insert file link</a>
+                            <div class="row" id="uploadfile" style="display:none;">
+                                <div class="col-lg-6">
+                                    <input type="file" name="file" id="file"/>              
+                                </div>
+                            </div> 
+                            <div class="row" id="link" style="display:none;">
+                                <div class="col-lg-6">
+                                    <input type="text" name="doi" id="doi" placeholder="ex: repositorium.sdum.uminho.pt" class="form-control"/>              
+                                </div>
+                            </div>
+                            <br/>
+                            <br/>
+                          
+                            </div>
+                            
+                            <div class="col-lg-8">
+                                <div class="row">
+                                    <div class="col-lg-8 text-right">
+                                        <button class="btn btn-info btn-xs" type="button" onclick="updateDocument()">
+                                            * Update
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-lg-6" id="alert3"></div>
+                        </form>                
+                    </div>        
+                </div>
+                
+                
+                
+            </div><!-- /#page-wrapper -->
+            
+        </div><!-- /#wrapper -->
+        
+        <!-- JavaScript -->
+        <script src="js/jquery-1.10.2.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/functions.js"></script>
+        <script src="js/thesis.js"></script>
+        <script src="js/cookies.js"></script>
+        <script src="js/jquery.multiple.select.js"></script>
+        
+        <!-- Page Specific Plugins -->
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+        <script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
+        <script src="js/morris/chart-data-morris.js"></script>
+        <script src="js/tablesorter/jquery.tablesorter.js"></script>
+        <script src="js/tablesorter/tables.js"></script>
+        <!--[if lte IE 8]><script src="js/excanvas.min.js"></script><![endif]-->
+        <script src="js/flot/jquery.flot.js"></script>
+        <script src="js/flot/jquery.flot.tooltip.min.js"></script>
+        <script src="js/flot/jquery.flot.resize.js"></script>
+        <script src="js/flot/jquery.flot.pie.js"></script>
+        <script src="js/flot/chart-data-flot.js"></script>
+        
+        <!-- onclick show/id -->
+        <script type="text/javascript">      
+      $("#program").hide();      
+      
+      $('#click').click(function() {
+          $('#program').toggle();
+      });      
+      
+      $("#keywordsselect").multipleSelect({
+          filter: true,
+          selectAll: false            
+      });
+    </script>
+        
+    </body>
+</html>

@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>myAcademy</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+    <!-- Add custom CSS here -->
+    <link href="css/sb-admin.css" rel="stylesheet">
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+    <!-- Page Specific CSS -->
+    <link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css">
+   
+      <script src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/rollups/md5.js"></script>
+      
+      <script type="text/javascript"><!--
+        
+        
+// create the XMLHttpRequest object, according browser
+
+
+var numJobs =1;
+var numSkills =1;
+numEdu = 1;
+
+var rowNum = new Array();
+rowNum[1] = 1;
+rowNum[2] = 1;
+rowNum[3] = 1;
+rowNum[4] = 1;
+rowNum[5] = 1;
+rowNum[6] = 1;
+var numRow = 1;
+
+
+function get_XmlHttp() {
+  // create the variable that will contain the instance of the XMLHttpRequest object (initially with null value)
+  var xmlHttp = null;
+
+  if(window.XMLHttpRequest) {		// for Forefox, IE7+, Opera, Safari, ...
+    xmlHttp = new XMLHttpRequest();
+  }
+  else if(window.ActiveXObject) {	// for Internet Explorer 5 or 6
+    xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+  return xmlHttp;
+}
+
+
+function uploadimage()
+{
+ var userID = getUserID();
+ var request =  get_XmlHttp();	
+ var fileInput = document.getElementById('images');
+ var file = fileInput.files[0];
+ var formData = new FormData();
+ formData.append('images', file);
+ formData.append('id', userID);
+ 
+ request.open("POST", "php/upload.php", true);			// define the request
+ request.send(formData);		// sends data
+ 
+   request.onreadystatechange = function() {
+    if (request.readyState == 4) {
+      
+      ajaxrequest('php/editprofile.php', 'image', getUserID(), 'null');
+    }
+  }
+}
+
+
+
+// sends data to a php file, via GET, and displays the received answer
+function ajaxrequest(serverPage, tagID, userID) {
+  var request =  get_XmlHttp();		// call the function for the XMLHttpRequest instance
+
+  // create the URL with data that will be sent to the server (a pair index=value)
+  var  url = serverPage+'?editprofile='+tagID+'&id='+userID;
+
+  request.open("GET", url, true);			// define the request
+  request.send(null);		// sends data
+  
+  // Check request status
+  // If the response is received completely, will be transferred to the HTML tag with tagID
+  request.onreadystatechange = function() {
+    if (request.readyState == 4) {
+     
+      document.getElementById(tagID).innerHTML = request.responseText;
+    }
+  }
+}
+
+
+function load(select,userID, tagID) {
+  var request =  get_XmlHttp();		// call the function for the XMLHttpRequest instance
+
+  var idObject = document.getElementById(select).value; 
+  
+  if(value!="")
+  {
+   var  url = 'php/Client_editprofile.php'+'?editprofile='+tagID+'&id='+userID+'&idObject='+idObject;
+   request.open("GET", url, true);			// define the request
+   request.send(null);		// sends data
+   
+  // Check request status
+  // If the response is received completely, will be transferred to the HTML tag with tagID
+  
+    request.onreadystatechange = function() {
+    if (request.readyState == 4) {
+      document.getElementById(tagID).innerHTML = request.responseText;
+    }
+  }
+  }
+  
+}
+
+function alertsuccess(message, tagID)
+{
+var insert = " <div class=\"row\"> <div class=\"col-lg-8\">  <div class=\"alert alert-success\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button> <h6>"+message+"</h6> </div> </div> ";
+$('#'+tagID).replaceWith(insert);
+}
+
+// componentID é o ID do select 
+// userID 
+// tagID corresponde ao work, skills, education
+
+function requestInfo(componentID, userID, tagID)
+{
+
+  var request =  get_XmlHttp();		// call the function for the XMLHttpRequest instance
+
+  var e = document.getElementById(componentID); // vai buscar o valor que está selecionado
+  var idObject = e.options[e.selectedIndex].value;
+  
+  if(idObject=="") return;
+  
+  // create the URL with data that will be sent to the server (a pair index=value)
+  var  url = 'php/Client_editprofile.php'+'?editprofile='+tagID+'&id='+userID+'&idObject='+idObject;
+
+  request.open("GET", url, true);			// define the request
+  request.send(null);		// sends data
+
+  // Check request status
+  // If the response is received completely, will be transferred to the HTML tag with tagID
+  request.onreadystatechange = function() {
+    if (request.readyState == 4) {
+      document.getElementById(tagID).innerHTML = request.responseText;
+    }
+  }
+
+}
+
+
+
+function remover(serverpage, idSelect, divContent, userID, funcao, newselect)
+{
+
+  var request =  get_XmlHttp();		// call the function for the XMLHttpRequest instance
+
+  var e = document.getElementById(idSelect); // vai buscar o valor que está selecionado
+  var idObject = e.options[e.selectedIndex].value;
+  
+  // vai remover e retorna os dados atualizados
+  
+  var  url = serverpage+'?editprofile='+funcao+'&id='+userID+'&idObject='+idObject;
+  request.open("GET", url, true);			// define the request
+  request.send(null);		// sends data
+  
+  
+
+  // Check request status
+  // If the response is received completely, will be transferred to the HTML tag with tagID
+  request.onreadystatechange = function() {
+    if (request.readyState == 4) {
+      ajaxrequest('php/Client_editprofile.php', newselect, userID);
+    }
+  }
+  
+}
+
+// Insert into Database 
+
+function create(serverPage, tagID) {
+  var request =  get_XmlHttp();		// call the function for the XMLHttpRequest instance
+
+  // create the URL with data that will be sent to the server (a pair index=value)
+  var  url = serverPage+'?editprofile='+tagID;
+
+  request.open("GET", url, true);			// define the request
+  request.send(null);		// sends data
+
+  // Check request status
+  // If the response is received completely, will be transferred to the HTML tag with tagID
+  request.onreadystatechange = function() {
+    if (request.readyState == 4) {
+      document.getElementById(tagID).innerHTML = request.responseText;
+    }
+  }
+}
+
+
+
+
+
+  function updatepersonalinfo() {
+   
+   var request =  get_XmlHttp();
+   var formData = new FormData();
+   
+   
+    var userID = getUserID();
+    var firstName = $('#firstName').val();
+    var lastName = $('#lastName').val();
+    var email = $('#email').val();
+    
+    var currentpassword = $('#currentpassword').val();
+    var password = $('#password').val();
+    var passwordrepeat = $('#passwordrepeat').val();
+
+     
+     var hashcurrentpassword = "";
+     var hashpassword = "";
+     var hashcurrentpassword = "";
+     
+     formData.append('editprofile', 'editname');
+    
+    if( (currentpassword!="" || password!="" || passwordrepeat!="") &&  (currentpassword =="" || password=="" || passwordrepeat==""))
+    {     
+      
+      $('#currentpassword').focus();
+      $('#passwordrepeat').focus();
+      $('#password').focus();
+      
+      alert("Please fill all spaces..");
+      return;
+    }
+    else if(currentpassword !="" && password!="" && passwordrepeat!="") 
+     {
+       if(password==passwordrepeat){            
+            hashcurrentpassword = CryptoJS.MD5(currentpassword);
+            hashpassword = CryptoJS.MD5(password);
+            hashpasswordrepeat = CryptoJS.MD5(passwordrepeat);
+            
+      }
+      if(password!=passwordrepeat)
+      {
+        alert("Passwords don't match");
+        return;
+      }
+     }
+    
+    formData.append('hashcurrentpassword', hashcurrentpassword);
+    formData.append('hashpassword', hashpassword);
+    
+    var website = $('#website').val();
+    var phone = $('#phone').val();
+    
+   
+    
+    formData.append('id', userID);
+    formData.append('firstName', firstName);
+    formData.append('lastName', lastName);
+    formData.append('email', email);
+    formData.append('website', website);
+    formData.append('phone', phone);
+    
+                                                        
+    request.open("POST", "php/editprofile.php", true);			// define the request
+    request.send(formData);		// sends data
+    
+
+    // Check request status
+    // If the response is received completely, will be transferred to the HTML tag with tagID
+    request.onreadystatechange = function() {
+      if (request.readyState == 4) {
+        document.getElementById("name").innerHTML = request.responseText;
+        //alert('Update Success');
+      }
+    }
+  }
+  
+  
+  //**************************************************** Inserir novo work ********************************************************************************************
+  function create_work() {
+  
+   
+    
+    var request =  get_XmlHttp();		// call the function for the XMLHttpRequest instance
+    var userID = getUserID();
+    var partnership = $('#partnership').val();
+    var jobname = $('#jobname').val();
+    var ybegin = $('#ybegin').val();
+    var yend = $('#yend').val();
+    var task = $('#task1').val();
+    var i=1;
+    
+    if($('#partnership').val().length == 0){
+      $('#partnership').focus();
+      alert("Input is empty!");
+      return;
+    };
+    
+     if($('#jobname').val().length == 0){
+      $('#jobname').focus();
+      alert("Input is empty!");
+      return;
+    };
+    
+     if($('#ybegin').val().length == 0){
+      $('#ybegin').focus();
+      alert("Input is empty!");
+      return;
+    };
+    
+     if($('#task1').val().length == 0){
+      $('#task1').focus();
+      alert("Input is empty!");
+      return;
+    };
+    
+
+    var ntask;
+    
+    // create the URL with data that will be sent to the server (a pair index=value)
+    var  url = 'php/editprofile.php'+'?editprofile='+'create_work'+'&id='+userID+'&partnership='+partnership+'&jobname='+jobname+'&ybegin='+ybegin+'&yend='+yend+'&numTasks='+numRow+'&task1='+task;
+
+     while (i<numRow) {
+     i=i+1;
+     ntask = $('#newtask'+i).val();
+     url = url+'&task'+i+'='+ntask;
+     }
+     
+     
+    request.open("GET", url, true);			// define the request
+    request.send(null);		// sends data
+
+  // Check request status
+  // If the response is received completely, will be transferred to the HTML tag with tagID
+ 
+ request.onreadystatechange = function() {
+ 
+ 
+    if (request.readyState == 4) {  
+        ajaxrequest('php/Client_editprofile.php', 'workselect', userID );  
+        message = "Success! New Job created";
+        alertsuccess(message, "form_workexp");
+        //url = 'php/Client_editprofile.php'+'?editprofile='+"JOB1"+'&id='+userID+'&idObject='+request.responseText;
+        //request.open("GET", url, true);			// define the request
+        //request.send(null);		// sends data
+        
+        //request.onreadystatechange = function() {
+        //if (request.readyState == 4) {
+        //document.getElementById("JOB1").innerHTML = request.responseText;
+        //}
+       //} 
+    }
+  }
+}
+
+
+
+
+
+function updatework() {
+  var e = document.getElementById("workSelectx"); // vai buscar o valor que está selecionado
+  var idwork = e.options[e.selectedIndex].value;
+  
+  
+  var request =  get_XmlHttp();		// call the function for the XMLHttpRequest instance
+    var userID = getUserID();
+    var partnership = $('#partnership').val();
+    var jobname = $('#jobname').val();
+    var ybegin = $('#ybegin').val();
+    var yend = $('#yend').val();
+    var task = $('#task1').val();
+    var i=1;
+    
+    if($('#partnership').val().length == 0){
+      $('#partnership').focus();
+      alert("Input is empty!");
+      return;
+    };
+    
+     if($('#jobname').val().length == 0){
+      $('#jobname').focus();
+      alert("Input is empty!");
+      return;
+    };
+    
+     if($('#ybegin').val().length == 0){
+      $('#ybegin').focus();
+      alert("Input is empty!");
+      return;
+    };
+    
+     if($('#task1').val().length == 0){
+      $('#task1').focus();
+      alert("Input is empty!");
+      return;
+    };
+    
+
+    var ntask;
+    
+    // create the URL with data that will be sent to the server (a pair index=value)
+    var  url = 'php/editprofile.php'+'?editprofile='+'update_work'+'&id='+userID+'&idwork='+idwork+'&partnership='+partnership+'&jobname='+jobname+'&ybegin='+ybegin+'&yend='+yend+'&numTasks='+numRow+'&task1='+task;
+
+     while (i<numRow) {
+     i=i+1;
+     ntask = $('#newtask'+i).val();
+     url = url+'&task'+i+'='+ntask;
+     }
+     
+     
+    request.open("GET", url, true);			// define the request
+    request.send(null);		// sends data
+
+  // Check request status
+  // If the response is received completely, will be transferred to the HTML tag with tagID
+ 
+ request.onreadystatechange = function() {
+    message = "Success! Information has been successfully updated";    
+    alertsuccess(message, "form_workexp");
+ }
+  
+}
+
+
+function creat_skill()
+{
+    var request = get_XmlHttp();		// call the function for the XMLHttpRequest instance
+    var userID = getUserID();
+    var skill_name = $('#skill_name').val();
+    var skill_description = $('#skill_description').val();
+    
+    if($('#skill_name').val().length == 0){
+      $('#skill_name').focus();
+      alert("Input is empty!");
+      return;
+    };
+    
+     if($('#skill_description').val().length == 0){
+      $('#skill_description').focus();
+      alert("Input is empty!");
+      return;
+    };
+ 
+    // create the URL with data that will be sent to the server (a pair index=value)
+    var  url = 'php/editprofile.php'+'?editprofile='+'create_skill'+'&id='+userID+'&skill_name='+skill_name+'&skill_description='+skill_description;
+   
+    request.open("GET", url, true);			// define the request
+    request.send(null);		// sends data
+
+    
+  // Check request status
+  // If the response is received completely, will be transferred to the HTML tag with tagID
+ 
+   request.onreadystatechange = function() {
+    if (request.readyState == 4) {
+    
+    ajaxrequest('php/Client_editprofile.php', 'allSkills', userID );
+    message = "Success! New Skill created";
+    alertsuccess(message, "form_skill");
+
+   }
+  }
+ }
+ 
+ function updateskill()
+{
+    var e = document.getElementById("skillSelectx"); // vai buscar o valor que está selecionado
+    var idskill = e.options[e.selectedIndex].value;
+        
+    var request = get_XmlHttp();		// call the function for the XMLHttpRequest instance
+    var userID = getUserID();
+    var skill_name = $('#skill_name').val();
+    var skill_description = $('#skill_description').val();
+    
+    if($('#skill_name').val().length == 0){
+      $('#skill_name').focus();
+      alert("Input is empty!");
+      return;
+    };
+    
+     if($('#skill_description').val().length == 0){
+      $('#skill_description').focus();
+      alert("Input is empty!");
+      return;
+    };
+ 
+    // create the URL with data that will be sent to the server (a pair index=value)
+    var  url = 'php/editprofile.php'+'?editprofile='+'update_skill'+'&idskill='+idskill+'&id='+userID+'&skill_name='+skill_name+'&skill_description='+skill_description;
+   
+    request.open("GET", url, true);			// define the request
+    request.send(null);		// sends data
+
+    
+  // Check request status
+  // If the response is received completely, will be transferred to the HTML tag with tagID
+ 
+   request.onreadystatechange = function() {
+    if (request.readyState == 4) {     
+    ajaxrequest('php/Client_editprofile.php', 'allSkills', userID );
+    message = "Success! Skill was updated";
+    alertsuccess(message, "form_skill");
+
+   }
+  }
+ }
+ 
+ 
+ function creat_education()
+{
+    var request = get_XmlHttp();		// call the function for the XMLHttpRequest instance
+    var userID = getUserID();
+    var school = $('#school').val();
+    var course = $('#courseval').val();
+    var degree = $('#degree').val();
+    var education_description = $('#education_description').val();
+    
+      if($('#school').val().length == 0){
+      $('#school').focus();
+      alert(" school Input is empty!");
+      return;
+    };
+    
+   
+    
+      if($('#degree').val().length == 0){
+      $('#degree').focus();
+      alert("degree Input is empty!");
+      return;
+    };
+    
+   
+    
+      if($('#courseval').val().length == 0){
+       $('#courseval').focus();
+       alert(" course Input is empty!");
+      return;
+    };
+    
+   
+    
+      if($('#education_description').val().length == 0){
+      $('#education_description').focus();
+      alert(" education_description Input is empty!");
+      return;
+    };
+    
+ 
+    // create the URL with data that will be sent to the server (a pair index=value)
+    var  url = 'php/editprofile.php'+'?editprofile='+'create_education'+'&id='+userID+'&school='+school+'&course='+course+'&degree='+degree+'&education_description='+education_description;
+   
+    request.open("GET", url, true);			// define the request
+    request.send(null);		// sends data
+
+    
+  // Check request status
+  // If the response is received completely, will be transferred to the HTML tag with tagID
+ 
+   request.onreadystatechange = function() {
+    if (request.readyState == 4) {
+    ajaxrequest('php/Client_editprofile.php', 'allEducation', userID );
+    
+    message = "Success! Education created";
+    alertsuccess(message, "form_education");
+    
+   }
+  }
+ }
+  
+  
+function updateeducation()
+{
+     var request = get_XmlHttp();
+    var e = document.getElementById("educationSelectx"); // vai buscar o valor que está selecionado
+    var ideducation = e.options[e.selectedIndex].value;
+    
+    var userID = getUserID();
+    var school = $('#school').val();
+    var course = $('#coursevalue').val();
+    var degree = $('#level').val();
+    var education_description = $('#description').val();
+    
+    
+   
+      
+      if($('#school').val().length == 0){
+      $('#school').focus();
+      alert(" school Input is empty!");
+      return;
+    };
+    
+   
+    
+      if($('#level').val().length == 0){
+      $('#level').focus();
+      alert("degree Input is empty!");
+      return;
+    };
+    
+   
+    
+      if($('#coursevalue').val().length == 0){
+       $('#coursevalue').focus();
+       alert(" course Input is empty!");
+      return;
+    };
+    
+   
+    
+      if($('#description').val().length == 0){
+      $('#description').focus();
+      alert(" education_description Input is empty!");
+      return;
+    };
+    
+ 
+    // create the URL with data that will be sent to the server (a pair index=value)
+    var  url = 'php/editprofile.php'+'?editprofile='+'update_education'+'&ideducation='+ideducation+'&id='+userID+'&school='+school+'&course='+course+'&description='+education_description+'&degree='+degree;
+   
+    request.open("GET", url, true);			// define the request
+    request.send(null);		// sends data
+
+
+    
+  // Check request status
+  // If the response is received completely, will be transferred to the HTML tag with tagID
+ 
+   request.onreadystatechange = function() {
+    if (request.readyState == 4) {     
+    ajaxrequest('php/Client_editprofile.php', 'allEducation', userID );
+    message = "Success! Course was updated";
+    alertsuccess(message, "form_education");
+
+   }
+  }
+ }
+ 
+
+
+
+
+
+
+//***********************************************************************************************************************************************************
+//***********************************************************************************************************************************************************
+
+
+
+function addTask(njob) {
+numRow++;
+var row =   '<div class="form-group" id="form-group_tasks'+numRow+'"><label id="lbTasks">Task' +numRow+':</label> <input class="form-control" name = "newtask'+numRow+'" id="newtask'+numRow+'" placeholder="Insert task"></input> </div>';
+jQuery('#new_RowTasks').append(row);
+}
+
+function removeTask(njob) {
+  if(numRow >=1){
+  jQuery('#form-group_tasks'+numRow).remove();
+  numRow = numRow - 1;
+  }
+}
+
+function addJob() {
+ numJobs ++;
+var insert = ' <div class="row" id="JOB'+numJobs+'"> <hr></hr> <div class="row"> <div class="col-lg-5" > <div class="form-group"> <label>Partnership</label> <input class="form-control" id="partnership'+numJobs+'" placeholder="Partnership Name"></input> </div> </div> <div class="col-lg-5"> <div class="form-group"> <label>Job\'s Name</label> <input class="form-control" id="jobname'+numJobs+'" placeholder="Insert Job\'s Name"></input> </div> </div> </div> <br></br> <div class="row"> <div class="col-lg-5"> <div class="form-group"> <label>Year of Begin</label> <input class="form-control" id="ybegin1" placeholder="e.g: 2012"></input> </div> </div> <div class="col-lg-5"> <div class="form-group"> <label>Year of end</label> <input class="form-control" id="yend'+numJobs+'" placeholder="e.g: 2013"></input> <p class="help-block">  If is still your current job does not insert end date  </p> </div> </div>  </div>  <div class="row" id="tasks'+numJobs+'"> <div class="col-lg-7" id="col_tasks"> <div class="form-group" id="form-group_tasks"> <label id="lbTasks">Task 1:</label> <input class="form-control" id="task1" placeholder="Insert task"></input> </div> </div> </div>   <div class="row"> <div class="col-lg-7"> <br></br> <p> <button class="btn btn-primary" type="button" onclick="addTask('+numJobs+');"> + Task </button> <button class="btn btn-danger" type="button" onclick="removeTask('+numJobs+');"> - Task </button>      </p> </div> </div> </div> </div>      </div>';
+
+jQuery('#work_exp').append(insert);
+}
+
+function removeJob() {
+  if(numJobs >=2 ){
+  jQuery('#JOB'+numJobs).remove();
+  rowNum[numJobs]=1;
+  numJobs = numJobs - 1;
+  
+  }
+}
+
+
+function addSkill() {
+numSkills ++;
+var insert = '<div class="row" id="Skill'+numSkills+'"> <hr></hr><div class="form-group" id="form"> <label>Skill Name'+numSkills+': </label> <input class="form-control" id="skill_name'+numSkills+'" placeholder=" e.g: Programming, Networking"></input> </div> <br></br> <div class="form-group"> <label>Description'+numSkills+': </label> <textarea class="form-control" rows="3" id="skill_description'+numSkills+'" placeholder="Insert Description"></textarea> </div> </div> </div>';
+
+jQuery('#skill_name_col').append(insert);
+}
+
+function removeSkill() {
+  if(numSkills >=2 ){
+  jQuery('#Skill'+numSkills).remove();
+  numSkills = numSkills - 1;
+  }
+}
+
+function addEducation() {
+numEdu ++;
+
+    var insert =  '<div class="row" id="edu'+numEdu+'"> <hr></hr><div class="col-lg-6"> <div class="form-group"> <label>School</label> <input class="form-control" placeholder="School Name" id="school'+numEdu+'"></input> </div> <div class="form-group"> <label> Course </label> <input class="form-control" placeholder="Course Name" id="course'+numEdu+'"></input>  </div> </div> <div class="form-group"> <label> Degree </label> <input class="form-control" placeholder="" id="degree'+numEdu+'"></input> </div> <div class="form-group"> <label> Description</label> <textarea class="form-control" rows="3" id="description'+numEdu+'"></textarea>  </div>  </div>  </div>';
+    jQuery('#edu').append(insert);
+    }
+    
+    
+function removeEducation() {
+  if(numEdu >=2 ){
+  jQuery('#edu'+numEdu).remove();
+  numEdu = numEdu - 1;
+  
+  }
+}
+--></script>
+      
+      
+  </head>
+
+  <body onload="ajaxrequest('php/editprofile.php', 'name', getUserID(), 'null'),
+                ajaxrequest('php/editprofile.php', 'image', getUserID(), 'null'),
+                ajaxrequest('php/editprofile.php', 'prof_prof', getUserID(), 'null'),
+                ajaxrequest('php/Client_editprofile.php', 'workselect', getUserID() ),
+                ajaxrequest('php/Client_editprofile.php', 'allEducation', getUserID()),
+                ajaxrequest('php/Client_editprofile.php', 'allSkills', getUserID()),
+                getCookie(), isAdmin()
+                ">
+    
+
+
+    <div id="wrapper">
+
+      <!-- Sidebar -->
+      <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">myAcademy</a>
+        </div>
+        
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+          <ul class="nav navbar-nav side-nav">
+            <li class="active"><a href="myprofile.html" ><i class="fa fa-user"></i> Personal Information</a></li>
+            
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" id="dmopen"><i class="fa fa-book"></i> Publications <b class="caret"></b></a>              
+              <ul class="dropdown-menu ">
+                <li><a  href="publications.html"><i class="fa fa-list"></i> List</a></li>
+                <li><a href="addpublication.html"><i class="fa fa-plus"></i> Insert</a></li>
+                <li><a href="editpublication.html"><i class="fa fa-edit"></i> Edit</a></li>
+              </ul>
+            </li>
+            
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-eye"></i> Thesis Examination <b class="caret"></b></a>              
+              <ul class="dropdown-menu">
+                <li><a href="theexam.html"><i class="fa fa-list"></i> List</a></li>
+                <li><a href="addexam.html"><i class="fa fa-plus"></i> Insert</a></li>
+                <li><a href="editexam.html"><i class="fa fa-edit"></i> Edit</a></li>
+              </ul>
+            </li>
+            
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-road"></i> Thesis Supervision <b class="caret"></b></a>              
+              <ul class="dropdown-menu"  >
+                <li><a href="thesup.html"><i class="fa fa-list"></i> List</a></li>
+                <li><a href="addsup.html"><i class="fa fa-plus"></i> Insert</a></li>
+                <li><a href="editsup.html"><i class="fa fa-edit"></i> Edit</a></li>
+              </ul>
+            </li>
+            
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-tasks"></i> Teaching <b class="caret"></b></a>              
+              <ul class="dropdown-menu">
+                <li><a href="teaching.html"><i class="fa fa-list"></i> List courses</a></li>
+                <li><a href="disciplines.html"><i class="fa fa-edit"></i> Disciplines</a></li>
+                <li><a href="content.html"><i class="fa fa-file"></i> Content</a></li>                                
+              </ul>
+            </li>
+            
+            <li class="dropdown" id="adminpanel">              
+            </li>
+          </ul>
+
+          <!-- User toolbar -->
+          <ul class="nav navbar-nav navbar-right navbar-user">                        
+            <li class="dropdown user-dropdown"  id="dyn_user">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
+                <li><a href="editprofile.html"><i class="fa fa-edit"></i> Edit Personal Info </a></li>              
+                <li class="divider"></li>
+                <li><a href="#"><i class="fa fa-power-off"></i> Log Out</a></li>
+                <li><a href="#"><i class="fa fa-question"></i> Support</a></li>
+              </ul>
+            </li>
+          </ul>
+          
+        </div><!-- /.navbar-collapse -->
+      </nav>
+
+      <div id="page-wrapper">
+
+        <div class="row">
+          <div class="col-lg-12">
+            <h1>Personal Information <small> Edit </small></h1>
+            <ol class="breadcrumb">
+           
+            </ol>
+          </div>
+        </div><!-- /.row -->
+        
+               
+          
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="bs-example">
+              <div class="jumbotron">
+                <div class="row">
+                  <div class="col-lg-2 text-center" id="image">
+                  
+                  <h3><small>Please specify a image file:<br></small></h3>
+                 
+                  <form method="post" enctype="multipart/form-data"  action="upload.php">
+                    <input class="btn btn-primary btn-sm" type="file" name="images" id="images" data-bfi-disabled ></input>
+                    <input class="btn btn-primary btn-sm" type='submit' id='btn' value='Upload!'"></input>
+                  </form>
+                    
+                  </div>
+                  
+                  
+                  <div class="col-lg-3">
+                  </div>
+                  
+                  <div class="col-lg-7 text-left" id="name">
+                    
+                    <div class="row">
+                      <div class="col-lg-5">
+                        <div class="form-group">
+                          <label>First Name</label>
+                          <input class="form-control" id="firstName" placeholder="Insert your First Name"></input>
+                        </div>
+                      </div>
+                      
+                      <div class="col-lg-5">
+                        <div class="form-group">
+                          <label>Last Name</label>
+                          <input class="form-control" id="lastName" placeholder="Insert your Last Name"></input>
+                        </div>
+                      </div>
+                      
+                      </div>
+                    
+                    <div class="row">
+                      <div class="col-lg-5">
+                        <div class="form-group">
+                          <label>Email</label>
+                          <input type="email" class="form-control" id="email" placeholder="Insert your Email"></input>
+                        </div>
+                      </div>
+                      
+                      <div class="col-lg-5">
+                        <div class="form-group">
+                          <label>Password</label>
+                          <input type="password" class="form-control" id="password" placeholder="Insert your Password"></input>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="row"> 
+                      
+                      <div class="col-lg-5">
+                       <div class="form-group">
+                         <label>WebSite</label>
+                         <input class="form-control" id="website" placeholder="Insert your Website"></input>  
+                       </div>
+                      </div>
+                      
+                       
+                      <div class="col-lg-5">
+                       <div class="form-group">
+                         <label>Phone</label>
+                         <input class="form-control"  type="tel" id="phone" placeholder="Insert your Number Phone"></input>                      
+                       </div>
+                      </div>
+                      
+                       
+                    </div>
+                
+                  </div>
+                  
+                </div> <!-- row -->
+                <div class="row">
+                  <div class="col-lg-12 text-right">
+                    <button class="btn btn-info btn-sm" type="button" onclick="updatepersonalinfo();">
+                      + Update
+                    </button>
+                  </div>
+                </div>
+              
+              </div>
+             
+            </div>
+           
+            
+          </div>
+            
+            
+        </div>
+        
+        <div class="row">
+          <form class="form-inline" role="form" action="" method="post" enctype="multipart/form-data" id="form_profile" >
+          <div class="col-lg-12">
+                <div class="row">
+                  <div class="col-lg-4 text-left">
+                    <h2><small>Professional Profile</small></h2>
+                  </div>
+                  
+                  <div class="col-lg-8 text-justify" id="prof_prof">
+                    <div class="row" id="PROF1">
+                      <div class="form-group" id="form">
+                        <textarea class="form-control" rows="3" size="130"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div> <!-\- row -\->
+          </div>
+          </form>
+        </div>
+        <hr></hr>
+        
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="row">
+              <div class="col-lg-4 text-left">
+                <h2><small>Work and Experience</small></h2>
+               
+                <div class="form-group" id="workselect">
+                  <select class="form-control" multiple="" style="width: 268px; padding: 5px;" >
+                    <option></option>
+                    <option></option>
+                    <option></option>
+                    <option></option>
+                    <option></option>
+                  </select>
+                </div>
+            
+                <button class="btn btn-primary btn-xs" type="button" onclick="create('php/editprofile.php', 'JOB1'), clearSelected('workSelectx');">
+                  + Create
+                </button>
+                <button class="btn btn-danger btn-xs" type="button" onclick="remover('php/editprofile.php', 'workSelectx', 'JOB1', getUserID(), 'remove_work', 'workselect'),create('php/editprofile.php', 'JOB1')">
+                  - Remove
+                </button>
+
+                
+              </div>
+              
+              <div class="col-lg-8 text-justify" id="work_exp">
+                
+              <div class="row" id="JOB1">
+               <form class="form-inline" role="form" action="php/creatwork.php" method="post" enctype="multipart/form-data" id="form_workexp" >
+                 
+               </form>
+               </div>    
+               </div> 
+              </div>
+
+            </div>
+          </div>
+      
+        <hr></hr>
+        
+        
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="row">
+              
+              <div class="col-lg-4 text-left">
+                <h2><small>Technical Skills</small></h2>
+                
+                <div class="form-group" id="allSkills">
+                  <select id="selectSkillsx" class="form-control" multiple="" style="width: 268px; padding: 5px;">
+                    <option></option>
+                    <option></option>
+                    <option></option>
+                    <option></option>
+                    <option></option>
+                  </select>
+                </div>
+                <button class="btn btn-primary btn-xs" type="button" onclick="create('php/editprofile.php', 'skill_name_col'), clearSelected('skillSelectx')">
+                  + Create
+                </button>
+                <button class="btn btn-danger btn-xs" type="button" onclick="remover('php/editprofile.php', 'skillSelectx', 'skill_name_col', getUserID(), 'remove_skill', 'allSkills'), create('php/editprofile.php', 'skill_name_col')">
+                  - Remove
+                </button>
+                
+              </div>
+              
+             
+                <div class="col-lg-8" id="skill_name_col">
+                  <div class="row" id="Skill">
+                    <form class="form-inline" role="form" action="" method="post" enctype="multipart/form-data" id="form_skill" >
+
+                    </form>
+                  </div>
+                </div>
+              
+            
+
+            </div>
+          </div>
+        </div>
+    
+       
+        <hr></hr>
+        
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="row">
+              <div class="col-lg-4 text-left">
+                
+                <h2><small>Education</small></h2>
+                
+               
+                  <div class="form-group" id="allEducation">
+                   <select class="form-control" multiple="" style="width: 268px; padding: 5px;" >
+                    <option></option>
+                    <option></option>
+                    <option></option>
+                    <option></option>
+                    <option></option>
+                  </select>
+                 </div>
+                
+                <button class="btn btn-primary btn-xs" type="button" onclick="create('php/editprofile.php', 'education'), clearSelected('educationSelectxb')">
+                  + Create
+                </button>
+                <button class="btn btn-danger btn-xs" type="button" onclick="remover('php/editprofile.php', 'educationSelectx', 'education', getUserID(), 'remove_education', 'allEducation'), create('php/editprofile.php', 'education')">
+                  - Remove
+                </button>
+              </div>
+              
+              
+              <div class="col-lg-8" id="education">
+                <div class="row" id="course">
+                <form class="form-inline" role="form" action="" method="post" enctype="multipart/form-data" id="form_education" >                
+                </form>
+                </div>
+              </div>
+
+
+            </div> 
+          </div>
+        </div>
+    
+         
+      </div><!-- /#page-wrapper -->
+
+    </div><!-- /#wrapper -->
+
+    <!-- JavaScript -->
+    <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/functions.js"></script>
+    <script src="js/cookies.js"></script>
+  
+
+    <!-- Page Specific Plugins -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
+    <script src="js/morris/chart-data-morris.js"></script>
+    <script src="js/tablesorter/jquery.tablesorter.js"></script>
+    <script src="js/tablesorter/tables.js"></script>
+
+  </body>
+</html>

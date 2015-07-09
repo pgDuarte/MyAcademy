@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	 
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>myAcademy - Contact Us</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	 
+	<!-- StyleSheet -->
+	<link rel="stylesheet" href="bs-2.3.2/css/bootstrap.css" />
+	<link rel="stylesheet" href="bs-2.3.2/css/bootstrap-responsive.css" />
+	<link rel="stylesheet" href="bs-2.3.2/css/custom.css" />
+	</head>
+ 
+<body>
+<!-- Navigation Bar -->
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+ 
+            </a>
+ 
+    <a href="index.html" class="brand">myAcademy</a>
+ 
+ 
+    </div>
+  </div>
+</div>
+<!-- Navigation Ends -->
+ 
+<!-- Main Container -->
+<section>
+<div class="container contact">
+    
+            <form class="well span8 center contact" action="php/contact.php" method="POST" accept-charset="UTF-8">
+        <div class="row">
+          <div class="span3">
+          <legend>Contact Us</legend>
+            <label>First Name</label>
+            <input type="text" name="fname" id="fname" class="span3" placeholder="Your First Name" required>
+            <label>Last Name</label>
+            <input type="text" name="lname" id="lname" class="span3" placeholder="Your Last Name" required>
+            <label>Email Address</label>
+            <div class="input-prepend">
+              <span class="add-on"><i class="icon-envelope"></i></span><input type="text" name="email" id="email" class="span2" style="width:233px" placeholder="Your email address" required>
+            </div>
+            <label>Subject
+            <select id="subject" name="subject" class="span3" required>
+              <option value="na" selected="">Choose One:</option>
+              <option value="service">General Customer Service</option>
+              <option value="suggestions">Suggestions</option>
+              <option value="product">Product Support</option>
+            </select>
+            </label>
+          </div>
+          <div class="span5">
+            <label>Message</label>
+            <textarea name="message" id="message" class="input-xlarge span5" rows="10" required></textarea>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary pull-right">Send</button>
+      </form>
+        
+</div>
+<p class="text-center muted ">&copy; Copyright 2014 - myAcademy</p>
+</section>
+<!-- Main Container Ends -->
+ 
+
+<!-- JavaScript -->
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="js/bootstrap.js"></script>
+</body>
+</html>

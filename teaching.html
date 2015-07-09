@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta name="description" content="">
+                    <meta name="author" content="">
+                        
+                        <title>Teaching - myAcademy</title>
+                        
+                        <!-- Bootstrap core CSS -->
+                        <link href="css/bootstrap.css" rel="stylesheet"/>
+                        <link href="css/bootstrap-combobox.css" rel="stylesheet" media="screen" type="text/css"/>
+                            
+                            <!-- Add custom CSS here -->
+                            <link href="css/sb-admin.css" rel="stylesheet">
+                                <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+                                    <!-- Page Specific CSS -->
+                                    <link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css">
+                                        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+                                            
+                                            <script src="js/listpubs.js"></script>
+                                            <!-- JavaScript -->
+                                            <script src="js/jquery-1.10.2.js"></script>
+                                            <script src="js/bootstrap.js"></script>
+                                          
+                                            <script src="js/pubs.js"></script>
+                                            
+                                            <link href="js/select2-3.4.5/select2.css" rel="stylesheet"/>
+                                            <script src="js/select2-3.4.5/select2.js"></script>
+                                            
+                                            
+                                            <script type="text/javascript">
+                                            
+                                            function get_XmlHttp() {
+                                                    // create the variable that will contain the instance of the XMLHttpRequest object (initially with null value)
+                                                    var xmlHttp = null;
+                                                    
+                                                    if(window.XMLHttpRequest) {		// for Forefox, IE7+, Opera, Safari, ...
+                                                    xmlHttp = new XMLHttpRequest();
+                                                    }
+                                                    else if(window.ActiveXObject) {	// for Internet Explorer 5 or 6
+                                                    xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+                                                    }
+                                                    
+                                                    return xmlHttp;
+                                            }
+                                            
+                                            
+                                            function listAllDisciplinesbyUser()
+                                            {
+                                                  var userID = getUserID();
+                                                  var request =  get_XmlHttp();	
+                                                  
+                                                  var formData = new FormData();
+                                                  formData.append('teachingfunction', 'listDisciplinesbyUser');
+                                                  formData.append('id', userID);
+                                                  
+                                                  request.open("POST", "php/teaching.php", true);			// define the request
+                                                  request.send(formData);		// sends data
+                                                  
+                                                  request.onreadystatechange = function() {
+                                                  if (request.readyState == 4) {
+                                                     document.getElementById("22listAllDisciplines").innerHTML = request.responseText;
+                                                  }
+                                                  }
+                                            }
+                                            
+                                                                                                //create keywords form
+                                                    function listCourseSelect() {
+                                                      var request =  get_XmlHttp();		// call the function for the XMLHttpRequest instance         
+                                                      // create the URL with data that will be sent to the server (a pair index=value)
+                                                     
+                                                      var formData = new FormData();
+                                                      formData.append('teachingfunction', 'listCourseSelect');
+                                                      formData.append('id', getUserID());
+                                                  
+                                                       request.open("POST", "php/teaching.php", true);			// define the request
+                                                       request.send(formData);		// sends data
+                                                  
+                                                      
+                                                         
+                                                      // Check request status
+                                                      // If the response is received completely, will be transferred to the HTML tag with tagID
+                                                      request.onreadystatechange = function() {
+                                                        if (request.readyState == 4) {
+                                                          document.getElementById("comboboxcourse").innerHTML = request.responseText;          
+                                                          //$('#combobox').multipleSelect('refresh');
+                                                        }
+                                                      }           
+                                                    }
+                                                    
+                                                   function listAcademicyearSelect() {
+                                                      var request =  get_XmlHttp();		// call the function for the XMLHttpRequest instance         
+                                                      // create the URL with data that will be sent to the server (a pair index=value)
+                                                     
+                                                      var formData = new FormData();
+                                                      formData.append('teachingfunction', 'listAcademicyearSelect');
+                                                      formData.append('id', getUserID());
+                                                  
+                                                       request.open("POST", "php/teaching.php", true);			// define the request
+                                                       request.send(formData);		// sends data
+                                                  
+                                                      
+                                                         
+                                                      // Check request status
+                                                      // If the response is received completely, will be transferred to the HTML tag with tagID
+                                                      request.onreadystatechange = function() {
+                                                        if (request.readyState == 4) {
+                                                          document.getElementById("comboboxyear").innerHTML = request.responseText;      
+                                                         
+                                                        
+                                                        }
+                                                      }           
+                                                    }
+                                                    
+                                                    
+                                                     function listinstitutionSelect() {
+                                                      var request =  get_XmlHttp();		// call the function for the XMLHttpRequest instance         
+                                                      // create the URL with data that will be sent to the server (a pair index=value)
+                                                     
+                                                      var formData = new FormData();
+                                                      formData.append('teachingfunction', 'listinstitutionSelect');
+                                                      formData.append('id', getUserID());
+                                                  
+                                                       request.open("POST", "php/teaching.php", true);			// define the request
+                                                       request.send(formData);		// sends data
+                                                  
+                                                      
+                                                         
+                                                      // Check request status
+                                                      // If the response is received completely, will be transferred to the HTML tag with tagID
+                                                      request.onreadystatechange = function() {
+                                                        if (request.readyState == 4) {
+                                                          document.getElementById("comboboxinst").innerHTML = request.responseText;          
+                                                        
+                                                        }
+                                                      }           
+                                                    }
+                                                    
+                                                    
+                                                    function sendqueries(query)
+                                                    {
+                                                        var userID = getUserID();
+                                                        var request =  get_XmlHttp();	
+                                                  
+                                                        var formData = new FormData();
+                                                        formData.append('teachingfunction', 'listAlldisciplinesbyquery');
+                                                        formData.append('id', userID);
+                                                        formData.append('query', query);
+                                                        
+                                                        request.open("POST", "php/teaching.php", true);			// define the request
+                                                        request.send(formData);		// sends data
+                                                        
+                                                        request.onreadystatechange = function() {
+                                                        if (request.readyState == 4) {
+                                                           document.getElementById("22listAllDisciplines").innerHTML = request.responseText;
+                                                        }
+                                                        }
+                                                          
+                                                    }
+                                                    
+                                                    
+                                                    
+                                                    function search()
+                                                    {
+                                                        var e = document.getElementById("comboboxcourse"); // vai buscar o valor que está selecionado
+                                                        var idcourse = e.options[e.selectedIndex].value;
+                                                       
+                                                        
+                                                        var d = document.getElementById("comboboxyear"); // vai buscar o valor que está selecionado
+                                                        var idyear = d.options[d.selectedIndex].value;
+                                                        
+                                                        
+                                                        var f = document.getElementById("comboboxinst"); // vai buscar o valor que está selecionado
+                                                        var idinst = f.options[f.selectedIndex].value;
+                                                        
+                                                        
+                                                        
+                                                        
+                                                        if (idcourse)
+                                                        {
+                                                          
+                                                              if (idyear)
+                                                              {
+                                                                
+                                                                  if (idinst)
+                                                                 {
+                                                                  var query = "select * from discipline where idusers="+getUserID()+" and courseName = '"+idcourse+"' and academicYear = '"+idyear+"' and inst ='"+idinst+"';";
+                                                                 
+                                                                   sendqueries(query);
+                                                                  // faz query com course, year, e inst
+                                                                 }else {
+                                                                         var query = "select * from discipline where idusers='"+getUserID()+"' and courseName = '"+idcourse+"' and academicYear = '"+idyear+"';";
+                                                                        
+                                                                         sendqueries(query);
+                                                                         //faz query com course e com year
+                                                                        }
+                                                              }else {
+                                                                       if (idinst)
+                                                                       {
+                                                                       var query = "select * from discipline where idusers='"+getUserID()+"' and courseName = '"+idcourse+"'  and inst ='"+idinst+"';";
+                                                                      
+                                                                          sendqueries(query);
+                                                                       // faz query com  course e com inst
+                                                                       }
+                                                                       else {
+                                                                        var query = "select * from discipline where idusers='"+getUserID()+"' and courseName = '"+idcourse+"';";
+                                                                          sendqueries(query);
+                                                                       // faz query com idcourse
+                                                                       }
+                                                                     }
+                                                        }
+                                                        else if (idyear)
+                                                        {
+                                                            if (idinst)
+                                                            {
+                                                                var query = "select * from discipline where idusers='"+getUserID()+"'  and academicYear = '"+idyear+"' and inst ='"+idinst+"';";
+                                                                  sendqueries(query);
+                                                               
+                                                            //Query por instituição e year
+                                                            }else 
+                                                            {
+                                                                 var query = "select * from discipline where idusers='"+getUserID()+"'  and academicYear = '"+idyear+"';";
+                                                                   sendqueries(query);
+                                                            }
+                                                        }
+                                                        else  if (idinst)
+                                                        {
+                                                         var query = "select * from discipline where idusers='"+getUserID()+"'  and inst ='"+idinst+"';";
+                                                           sendqueries(query);
+                                                        
+                                                        // faz a query só para o idinst
+                                                        }else {listAllDisciplinesbyUser();}
+                                                    }
+                                                    
+                                                    
+                                               
+    
+                                                    
+                                            </script>
+                                            
+                                            
+                                            
+    </head>
+    
+ 
+    
+    <body onload=" listCourseSelect(),  listAcademicyearSelect() ,listinstitutionSelect(),getCookie(),listAllDisciplinesbyUser(),isAdmin()" >
+        
+       
+        
+        <div id="wrapper">
+            
+            <!-- Sidebar -->
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">myAcademy</a>
+                </div>
+                
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav side-nav">
+                        <li><a href="myprofile.html"><i class="fa fa-user"></i> Personal Information</a></li>
+                        
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" id="dmopen"><i class="fa fa-book"></i> Publications <b class="caret"></b></a>              
+                            <ul class="dropdown-menu">
+                                <li><a href="publications.html"><i class="fa fa-list"></i> List</a></li>
+                                <li><a href="addpublication.html"><i class="fa fa-plus"></i> Insert</a></li>
+                                <li><a href="editpublication.html"><i class="fa fa-edit"></i> Edit</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-eye"></i> Thesis Examination <b class="caret"></b></a>              
+                            <ul class="dropdown-menu ">
+                                <li><a href="theexam.html"><i class="fa fa-list"></i> List</a></li>
+                                <li><a  href="addexam.html"><i class="fa fa-plus"></i> Insert</a></li>
+                                <li><a href="editexam.html"><i class="fa fa-edit"></i> Edit</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-road"></i> Thesis Supervision <b class="caret"></b></a>              
+                            <ul class="dropdown-menu"  >
+                                <li><a href="thesup.html"><i class="fa fa-list"></i> List</a></li>
+                                <li><a href="addsup.html"><i class="fa fa-plus"></i> Insert</a></li>
+                                <li><a href="editsup.html"><i class="fa fa-edit"></i> Edit</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-tasks"></i> Teaching <b class="caret"></b></a>              
+                            <ul class="dropdown-menu collapse in" >
+                                <li><a class="active" href="teaching.html"><i class="fa fa-list"></i> List courses</a></li>
+                                <li><a href="disciplines.html"><i class="fa fa-edit"></i> Disciplines</a></li>
+                                <li><a href="content.html"><i class="fa fa-file"></i> Content</a></li>                                
+                            </ul>
+                        </li>
+                        
+                        <li class="dropdown" id="adminpanel">              
+                        </li>
+                    </ul>
+                    
+                    <!-- User toolbar -->
+                    <ul class="nav navbar-nav navbar-right navbar-user">                        
+                        <li class="dropdown user-dropdown"  id="dyn_user">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
+                                <li><a href="#"><i class="fa fa-edit"></i> Edit Personal Info </a></li>              
+                                <li class="divider"></li>
+                                <li><a href="#"><i class="fa fa-power-off"></i> Log Out</a></li>
+                                <li><a href="#"><i class="fa fa-question"></i> Support</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </nav>
+            
+            <div id="page-wrapper">
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <h1>Disciplines</h1>                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.row -->
+                
+                <div class="row">
+                    <div class="col-lg-12" id="indice">
+                        <ol class="breadcrumb">
+
+                        </ol>
+                    </div>
+                </div>
+                
+                <div class="row">
+                   
+                     
+
+                    <div class="col-lg-3">  
+                        <label>Course</label>
+                    <select id="comboboxcourse" style="width:250px;">
+                        
+                        </select>
+                    </div>
+                        
+                                                         
+                      
+                    
+                     
+                        
+                    <div class="col-lg-3">   
+                        <label>Academic Year</label>
+                    <select id="comboboxyear" style="width:250px;">
+                         
+                        </select>
+                    </div>
+                        
+                        
+                     
+                    
+                        
+                    <div class="col-lg-3">   
+                        <label>Institution</label>
+                        <select id="comboboxinst" style="width:250px;">
+                              
+                        </select>
+                    </div>
+                    
+                   
+                        
+                </div>
+                
+                <div class="row">
+                   <div class="col-lg-12 text-right"> 
+                       <p>
+                           <button type="button" class="fa fa-search btn btn-inverse" onclick="search();"></button> 
+                       </p>
+                   </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-lg-12"> 
+                        <p></br></p>
+                    </div>
+                </div>
+                
+             
+                
+                <div class="row">   
+                    
+     
+                
+                    
+                    <div class="col-lg-12" id="22listAllDisciplines"> 
+                                            
+                        
+                    </div>  
+                    
+                </div>
+                
+                
+                
+            </div><!-- /#page-wrapper -->
+            
+        </div><!-- /#wrapper -->
+
+        
+        <script>
+        $(document).ready(function() { $("#comboboxcourse").select2(); });
+        </script>
+        
+        <script>
+        $(document).ready(function() { $("#comboboxyear").select2(); });
+        </script>
+        
+        <script>
+        $(document).ready(function() { $("#comboboxinst").select2(); });
+        </script>
+        
+        
+        
+        <!-- Page Specific Plugins -->
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+        <script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
+        <script src="js/morris/chart-data-morris.js"></script>
+        <script src="js/tablesorter/jquery.tablesorter.js"></script>
+        <script src="js/tablesorter/tables.js"></script>    
+        <script src="js/excanvas.min.js"></script>
+        <script src="js/flot/jquery.flot.js"></script>
+        <script src="js/flot/jquery.flot.tooltip.min.js"></script>
+        <script src="js/flot/jquery.flot.resize.js"></script>
+        <script src="js/flot/jquery.flot.pie.js"></script>
+        <script src="js/flot/chart-data-flot.js"></script>
+        <script src="js/flot/chart-data-flot.js"></script>
+        <script src="js/cookies.js"></script>
+        
+
+
+        
+    </body>
+</html>

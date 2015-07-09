@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+
+    <title>Thesis Examination - myAcademy</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet"/>
+    <link href="css/multiple-select.css" rel="stylesheet"/>
+
+    <!-- Add custom CSS here -->
+    <link href="css/sb-admin.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css"/>
+    <!-- Page Specific CSS -->
+    <link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css"/>
+  </head>
+
+  <body onload="adddkeywords_form('php/content.php', 'keywordsselect', 'keywords_form'),getCookie(),isAdmin()">
+    <div id="wrapper">
+
+      <!-- Sidebar -->
+      <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">myAcademy</a>
+        </div>
+        
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+          <ul class="nav navbar-nav side-nav">
+            <li><a href="myprofile.html"><i class="fa fa-user"></i> Personal Information</a></li>
+            
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" id="dmopen"><i class="fa fa-book"></i> Publications <b class="caret"></b></a>              
+              <ul class="dropdown-menu">
+                <li><a href="publications.html"><i class="fa fa-list"></i> List</a></li>
+                <li><a href="addpublication.html"><i class="fa fa-plus"></i> Insert</a></li>
+                <li><a href="editpublication.html"><i class="fa fa-edit"></i> Edit</a></li>
+              </ul>
+            </li>
+            
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-eye"></i> Thesis Examination <b class="caret"></b></a>              
+              <ul class="dropdown-menu collapse in">
+                <li><a href="theexam.html"><i class="fa fa-list"></i> List</a></li>
+                <li><a class="active" href="addexam.html"><i class="fa fa-plus"></i> Insert</a></li>
+                <li><a href="editexam.html"><i class="fa fa-edit"></i> Edit</a></li>
+              </ul>
+            </li>
+            
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-road"></i> Thesis Supervision <b class="caret"></b></a>              
+              <ul class="dropdown-menu"  >
+                <li><a href="thesup.html"><i class="fa fa-list"></i> List</a></li>
+                <li><a href="addsup.html"><i class="fa fa-plus"></i> Insert</a></li>
+                <li><a href="editsup.html"><i class="fa fa-edit"></i> Edit</a></li>
+              </ul>
+            </li>
+            
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-tasks"></i> Teaching <b class="caret"></b></a>              
+              <ul class="dropdown-menu">
+                <li><a href="teaching.html"><i class="fa fa-list"></i> List courses</a></li>
+                <li><a href="disciplines.html"><i class="fa fa-edit"></i> Disciplines</a></li>
+                <li><a href="content.html"><i class="fa fa-file"></i> Content</a></li>                                
+              </ul>
+            </li>
+            
+            <li class="dropdown" id="adminpanel">              
+            </li>
+          </ul>
+          
+          <!-- User toolbar -->
+          <ul class="nav navbar-nav navbar-right navbar-user">                        
+            <li class="dropdown user-dropdown"  id="dyn_user">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="myprofile.html"><i class="fa fa-user"></i> Profile</a></li>
+                <li><a href="editprofile.html"><i class="fa fa-edit"></i> Edit Personal Info </a></li>              
+                <li class="divider"></li>
+                <li><a href="#"><i class="fa fa-power-off"></i> Log Out</a></li>
+                <li><a href="#"><i class="fa fa-question"></i> Support</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </nav>
+
+      <div id="page-wrapper">
+
+        <div class="row">
+          <div class="col-lg-12">
+            <h1>Thesis Examination  <small>Insert your examination</small></h1>
+            <ol class="breadcrumb text-right">
+              <a onclick="$('#xml').toggle()" class="text-right">Upload XML</a>
+              <div id="xml" style="display:none;">
+                <input type="file" id="zipfile" style="display:initial;"/>                 
+                <button class="btn btn-success btn-xs" type="button" onclick="examxml()">Upload</button>                
+              </div>              
+            </ol>           
+          </div>
+        </div><!-- /.row -->
+
+    <div class="row">
+     
+      <div class="col-lg-12"> 
+        <form role="form" action="php/theexam.php" method="post" enctype="multipart/form-data" id="examination" >           
+          
+          <!-- ____________________________________Thesis Examination________________________________________ -->            
+          
+          <legend class="text-left"></legend>
+          
+          <div class="row">
+            <div class="col-lg-6">
+             <label>Institution</label>            
+              <input class="form-control" name="inst" id="inst"  type="text" required=""/>                                  
+            </div>
+          </div>
+          <br/>
+          <div class="row">
+            <div class="col-lg-2">
+              <label>Degree</label>            
+              <select class="form-control" name="type" id="type">    
+                <option value="msc">MSc</option>
+                <option value="phd">PhD</option>                
+              </select>                                                
+            </div>
+            
+            <label for="ansiDate">Date</label>
+            <div class="form-inline">             
+              <div class="form-group"> 
+                <input id="ansiDate" class="form-control" name="ansiDate" type="date" placeholder="dd-mm-aaaa" required=""/>
+              </div>
+              <div class="form-group"> 
+                <input class="form-control" name="date" id="date" type="text" placeholder="Ex: July 2013" />
+              </div>
+            </div>           
+          </div> 
+          <br/>
+          <div class="row">
+            <div class="col-lg-3">                                    
+              <label for="keywordsselect">Keywords</label>
+              <select class="form-control" id="keywordsselect" multiple="multiple">                                                                             
+              </select>                                    
+            </div>
+          </div>
+          
+          <br/>
+          <!--            Student           -->                   
+          <legend class="text-left">Student</legend>
+          
+          <div class="row">
+            <div class="col-lg-3">
+             <label for="name">Name</label>
+             <input id="name" name="name" class="form-control" type="text" required=""/>
+            </div>
+            <div class="col-lg-2">
+              <label for="number">Number</label>
+              <input id="number" name="number" class="form-control" type="text"/>
+            </div>
+          </div>
+          
+          <br/>
+          <a id="click">Click here to add more info about the student</a>
+          <br/>
+
+          <div id="program">            
+            <div class="row">
+              <div class="col-lg-3">
+                <label>Email</label>
+                <input name="email" id="email" class="form-control" type="text"/>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-lg-3">
+                <label>Linkedin</label>
+                <input name="linkedin" id="linkedin" class="form-control" type="text"/>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-lg-6">
+                <label>Info about the course</label>
+                <input name="description" id="description" class="form-control" type="text" placeholder="ex: MIECOM - Universidade do Minho"/>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-lg-4">
+                <label>Website</label>                
+                <input name="address" id="address" class="form-control" type="text" placeholder="ex: mecom.eng.uminho.pt"/>
+              </div>
+            </div>
+            
+          </div>
+          <br/>
+          
+          <!--            Document          -->
+          <legend class="text-left">Document</legend>          
+          <div class="row">
+            <div class="col-lg-6">
+              <label for="filetitle">Title</label>
+              <input type="text" placeholder="Title" id="filetitle" name="filetitle" class="form-control"/>
+            </div>
+          </div>
+          <br/>
+          <a onclick="$('#uploadfile').show(),$('#link').hide()">Click here to upload file</a><a onclick="$('#uploadfile').hide(),$('#link').show()"> or here to insert file link</a>
+          <div class="row" id="uploadfile" style="display:none;">
+            <div class="col-lg-6">
+              <input type="file" name="file" id="file"/>              
+            </div>
+          </div>
+          <div class="row" id="link">
+            <div class="col-lg-6">
+              <input type="text" name="doi" id="doi" placeholder="ex: repositorium.sdum.uminho.pt" class="form-control"/>              
+            </div>
+          </div>
+          <br/>
+          <br/>          
+          <div class="row">
+            <div class="col-lg-12 text-left">
+              <button class="btn btn-success btn-sm" type="button" id="send" onclick="insertexam()">Insert</button>
+            </div>           
+          </div>          
+        </form>
+        <!-- Modal -->
+        <div class="modal fade bs-modal-sm" id="loadingmsg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">               
+              <div class="modal-body text-center">
+                Uploading...
+              </div>                
+            </div>
+          </div>
+        </div>
+      </div>        
+    </div>
+    
+       
+
+      </div><!-- /#page-wrapper -->
+
+    </div><!-- /#wrapper -->
+
+    <!-- JavaScript -->
+    <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/functions.js"></script>
+    <script src="js/thesis.js"></script>
+    <script src="js/jquery.multiple.select.js"></script>
+    <script src="js/cookies.js"></script>   
+
+    <!-- Page Specific Plugins -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
+    <script src="js/morris/chart-data-morris.js"></script>
+    <script src="js/tablesorter/jquery.tablesorter.js"></script>
+    <script src="js/tablesorter/tables.js"></script>
+    <!--[if lte IE 8]><script src="js/excanvas.min.js"></script><![endif]-->
+	<script src="js/flot/jquery.flot.js"></script>
+	<script src="js/flot/jquery.flot.tooltip.min.js"></script>
+	<script src="js/flot/jquery.flot.resize.js"></script>
+	<script src="js/flot/jquery.flot.pie.js"></script>
+	<script src="js/flot/chart-data-flot.js"></script>
+    
+    <!-- onclick show/id -->
+    <script type="text/javascript">      
+      $("#program").hide();      
+      
+      $('#click').click(function() {
+          $('#program').toggle();
+      });      
+      
+      $("#keywordsselect").multipleSelect({
+          filter: true,
+          selectAll: false            
+      });
+    </script>
+
+  </body>
+</html>

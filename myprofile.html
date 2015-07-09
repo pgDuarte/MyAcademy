@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>myAcademy</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+    <!-- Add custom CSS here -->
+    <link href="css/sb-admin.css" rel="stylesheet">
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+    <!-- Page Specific CSS -->
+    <link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css">
+      
+    
+      <script type="text/javascript"><!--
+  // create the XMLHttpRequest object, according browser
+  function get_XmlHttp() {
+    // create the variable that will contain the instance of the XMLHttpRequest object (initially with null value)
+    var xmlHttp = null;
+  
+    if(window.XMLHttpRequest) {		// for Forefox, IE7+, Opera, Safari, ...
+      xmlHttp = new XMLHttpRequest();
+    }
+    else if(window.ActiveXObject) {	// for Internet Explorer 5 or 6
+      xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+  
+    return xmlHttp;
+  }
+  
+  // sends data to a php file, via GET, and displays the received answer
+  
+  // aqui tave
+  function ajaxrequest(serverPage, tagID, userID) {
+    var request =  get_XmlHttp();		// call the function for the XMLHttpRequest instance
+  
+    // create the URL with data that will be sent to the server (a pair index=value)
+    var  url = serverPage+'?userList='+tagID+'&id='+userID;
+  
+    request.open("GET", url, true);			// define the request
+    request.send(null);		// sends data
+  
+    // Check request status
+    // If the response is received completely, will be transferred to the HTML tag with tagID
+    request.onreadystatechange = function() {
+      if (request.readyState == 4) {
+        document.getElementById(tagID).innerHTML = request.responseText;
+      }
+    }
+  }
+  
+  
+  
+ 
+  
+  
+  
+--></script>
+      
+      
+  </head>
+
+  <body onload="ajaxrequest('php/server.php', 'work_exp', getUserID()),
+                ajaxrequest('php/server.php', 'name', getUserID()),
+                ajaxrequest('php/server.php', 'tec_skill', getUserID()), 
+                ajaxrequest('php/server.php', 'edu', getUserID()),
+                ajaxrequest('php/server.php', 'info', getUserID()),
+                ajaxrequest('php/server.php', 'prof_prof', getUserID()),
+                ajaxrequest('php/server.php', 'image', getUserID()),
+                getCookie(), isAdmin()">
+    
+
+
+    <div id="wrapper">
+
+      <!-- Sidebar -->
+      <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">myAcademy</a>
+        </div>
+        
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+          <ul class="nav navbar-nav side-nav">
+            <li class="active" ><a href="myprofile.html"  ><i class="fa fa-user"></i> Personal Information</a></li>
+            
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" id="dmopen"><i class="fa fa-book"></i> Publications <b class="caret"></b></a>              
+              <ul class="dropdown-menu ">
+                <li><a  href="publications.html"><i class="fa fa-list"></i> List</a></li>
+                <li><a href="addpublication.html"><i class="fa fa-plus"></i> Insert</a></li>
+                <li><a href="editpublication.html"><i class="fa fa-edit"></i> Edit</a></li>
+              </ul>
+            </li>
+            
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-eye"></i> Thesis Examination <b class="caret"></b></a>              
+              <ul class="dropdown-menu">
+                <li><a href="theexam.html"><i class="fa fa-list"></i> List</a></li>
+                <li><a href="addexam.html"><i class="fa fa-plus"></i> Insert</a></li>
+                <li><a href="editexam.html"><i class="fa fa-edit"></i> Edit</a></li>
+              </ul>
+            </li>
+            
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-road"></i> Thesis Supervision <b class="caret"></b></a>              
+              <ul class="dropdown-menu"  >
+                <li><a href="thesup.html"><i class="fa fa-list"></i> List</a></li>
+                <li><a href="addsup.html"><i class="fa fa-plus"></i> Insert</a></li>
+                <li><a href="editsup.html"><i class="fa fa-edit"></i> Edit</a></li>
+              </ul>
+            </li>
+            
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-tasks"></i> Teaching <b class="caret"></b></a>              
+              <ul class="dropdown-menu">
+                <li><a href="teaching.html"><i class="fa fa-list"></i> List courses</a></li>
+                <li><a href="disciplines.html"><i class="fa fa-edit"></i> Disciplines</a></li>
+                <li><a href="content.html"><i class="fa fa-file"></i> Content</a></li>                                
+              </ul>
+            </li>
+            
+            <li class="dropdown" id="adminpanel">              
+            </li>
+          </ul>
+          
+          <!-- User toolbar -->
+          <ul class="nav navbar-nav navbar-right navbar-user">                        
+            <li class="dropdown user-dropdown"  id="dyn_user">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
+                <li><a href="editprofile.html"><i class="fa fa-edit"></i> Edit Personal Info </a></li>              
+                <li class="divider"></li>
+                <li><a href="#"><i class="fa fa-power-off"></i> Log Out</a></li>
+                <li><a href="#"><i class="fa fa-question"></i> Support</a></li>
+              </ul>
+            </li>
+          </ul>
+          
+        </div><!-- /.navbar-collapse -->
+      </nav>
+
+      <div id="page-wrapper">
+
+        <div class="row">
+          <div class="col-lg-12">
+            <h1>Personal Information <small> Overview</small></h1>
+            <ol class="breadcrumb">             
+            </ol>
+          </div>
+        </div><!-- /.row -->
+        
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="bs-example">
+              <div class="jumbotron">
+                <div class="row">
+                    <div class="col-lg-2 text-center">
+                      <a id="image">
+
+                                             
+                      </a>  
+                    </div>
+                  <div class="col-lg-4 text-center" id="name">
+                    
+                      <h2>Name of Person</br><small>Actual Job</small></h2>
+                    
+                  </div>
+                  
+                  <div class="col-lg-2 text-center">
+                    <h2> </h2>
+                  </div>
+
+                  <div class="col-lg-4 text-left" id="info">
+                  </div>
+                  
+                </div> <!-- row -->
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-lg-12">
+                <div class="row">
+                  <div class="col-lg-4 text-left">
+                    <h2><small>Professional Profile</small></h2>
+                  </div>
+                  
+                  <div class="col-lg-8 text-justify" id="prof_prof">
+                   
+                  </div>
+                </div> 
+          </div>
+        </div>
+        <hr></hr>
+        
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="row">
+              <div class="col-lg-4 text-left">
+                <h2><small>Work and Experience</small></h2>
+              </div>
+              
+            
+              <div class="col-lg-8 text-justify" id="work_exp">                
+              </div>
+
+            </div> 
+          </div>
+        </div>
+        <hr></hr>
+        
+        
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="row">
+              <div class="col-lg-4 text-left">
+                <h2><small>Technical Skills</small></h2>
+              </div>
+              
+              
+              <div class="col-lg-8 text-justify" id="tec_skill">
+               
+              </div>
+              
+            </div> 
+          </div>
+        </div>
+        <hr></hr>
+        
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="row">
+              <div class="col-lg-4 text-left">
+                <h2><small>Education</small></h2>
+              </div>
+              
+              
+              <div class="col-lg-8 text-justify" id="edu">
+              
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        
+              
+      </div><!-- /#page-wrapper -->
+
+    </div><!-- /#wrapper -->
+
+    <!-- JavaScript -->
+    <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/cookies.js"></script>
+
+    <!-- Page Specific Plugins -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
+    <script src="js/morris/chart-data-morris.js"></script>
+    <script src="js/tablesorter/jquery.tablesorter.js"></script>
+    <script src="js/tablesorter/tables.js"></script>
+
+  </body>
+</html>

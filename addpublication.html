@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>            
+
+    <title>Publications - myAcademy</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet"/>
+    <link href="css/multiple-select.css" rel="stylesheet"/>
+
+    <!-- Add custom CSS here -->
+    <link href="css/sb-admin.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css"/>
+    <!-- Page Specific CSS -->
+    <link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css"/>
+  </head>
+
+  <body onload="adddkeywords_form('php/content.php', 'keywordsselect', 'keywords_form'), getCookie(),isAdmin()">
+
+    <div id="wrapper">
+
+      <!-- Sidebar -->
+      <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">myAcademy</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+          <ul class="nav navbar-nav side-nav">
+            <li><a href="myprofile.html"><i class="fa fa-user"></i> Personal Information</a></li>
+            
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" id="dmopen"><i class="fa fa-book"></i> Publications <b class="caret"></b></a>              
+              <ul class="dropdown-menu collapse in">
+                <li><a href="publications.html"><i class="fa fa-list"></i> List</a></li>
+                <li><a class="active" href="addpublication.html"><i class="fa fa-plus"></i> Insert</a></li>
+                <li><a href="editpublication.html"><i class="fa fa-edit"></i> Edit</a></li>
+              </ul>
+            </li>
+            
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-eye"></i> Thesis Examination <b class="caret"></b></a>              
+              <ul class="dropdown-menu">
+                <li><a href="theexam.html"><i class="fa fa-list"></i> List</a></li>
+                <li><a href="addexam.html"><i class="fa fa-plus"></i> Insert</a></li>
+                <li><a href="editexam.html"><i class="fa fa-edit"></i> Edit</a></li>
+              </ul>
+            </li>
+            
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-road"></i> Thesis Supervision <b class="caret"></b></a>              
+              <ul class="dropdown-menu"  >
+                <li><a href="thesup.html"><i class="fa fa-list"></i> List</a></li>
+                <li><a href="addsup.html"><i class="fa fa-plus"></i> Insert</a></li>
+                <li><a href="editsup.html"><i class="fa fa-edit"></i> Edit</a></li>
+              </ul>
+            </li>
+            
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-tasks"></i> Teaching <b class="caret"></b></a>              
+              <ul class="dropdown-menu">
+                <li><a href="teaching.html"><i class="fa fa-list"></i> List courses</a></li>
+                <li><a href="disciplines.html"><i class="fa fa-edit"></i> Disciplines</a></li>
+                <li><a href="content.html"><i class="fa fa-file"></i> Content</a></li>                                
+              </ul>
+            </li>
+            
+            <li class="dropdown" id="adminpanel">              
+            </li>
+          </ul>
+          
+          <!-- User toolbar -->
+          <ul class="nav navbar-nav navbar-right navbar-user">                        
+            <li class="dropdown user-dropdown"  id="dyn_user">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="myprofile.html"><i class="fa fa-user"></i> Profile</a></li>
+                <li><a href="editprofile.html"><i class="fa fa-edit"></i> Edit Personal Info </a></li>              
+                <li class="divider"></li>
+                <li><a href="#"><i class="fa fa-power-off"></i> Log Out</a></li>
+                <li><a href="#"><i class="fa fa-question"></i> Support</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </nav>
+
+      <div id="page-wrapper">
+
+        <div class="row">
+          <div class="col-lg-12">
+            <h1>Publications  <small>Insert your publication</small></h1>
+            <ol class="breadcrumb text-right">              
+              <a onclick="$('#xml').toggle()" class="text-right">Upload XML</a>
+              <div id="xml" style="display:none;">
+                <input type="file" id="zipfile" style="display:initial;"/>                 
+                <button class="btn btn-success btn-xs" type="button" onclick="pubsxml()">Upload</button>                
+              </div>                             
+            </ol>            
+          </div>
+        </div><!-- /.row -->
+
+    <div class="row">
+     
+      <div class="col-lg-12"> 
+        <form role="form" action="php/pubs.php" method="post" enctype="multipart/form-data" id="publications" >           
+          <input type="hidden" name="natributes" id="natributes"/>
+          <input type="hidden" name="nauthors" id="nauthors"/>
+          <input type="hidden" name="nfiles" id="nfiles"/>
+          
+          <!-- ____________________________________Publications____________________________________________________ -->                   
+          
+          <legend class="text-left"></legend>
+          
+          <div class="row">
+            <div class="col-lg-6">
+             <label>Title</label>            
+              <input class="form-control" name="title" id="title" type="text" required=""/>                                  
+            </div>
+          </div>
+          <br/>
+
+          <div class="row">
+            <div class="col-lg-2">
+              <label>Publication ID</label>            
+              <input class="form-control" name="idpub" id="idpub" type="text" required=""/>               
+            </div> 
+            
+            <div class="col-lg-2">
+              <label>Publication Type</label>            
+              <select class="form-control" name="type" id="type">
+                <option value="article">Article</option>
+                <option value="book">Book</option>
+                <option value="inbook">Inbook</option>
+                <option value="proceedings">Proceedings</option>
+                <option value="inproceedings">Inproceedings</option>
+                <option value="misc">Misc</option>     
+                <option value="msc">MSc</option>
+                <option value="phd">PhD</option>                
+              </select>                                                
+            </div>
+          </div>
+          <br/>
+          <div class="row">
+            <div class="col-lg-2">
+              <label>Year</label>            
+              <input class="form-control" name="year" id="year" type="number" min="1960" max="2060" value="2014" required=""/>                        
+            </div>
+            
+            <div class="col-lg-3">                                    
+              <label for="keywordsselect">Keywords</label>
+              <select class="form-control" id="keywordsselect" multiple="multiple">                                                                             
+              </select>                                    
+            </div>
+          </div>
+
+          <br/>
+          <div class="row">
+            <div class="col-lg-2">
+              <label>Privacy</label>            
+              <select class="form-control" name="private" id="private">
+                <option value="0">Public</option>
+                <option value="1">Private</option>
+              </select>                        
+            </div>  
+          </div>
+          <br/>
+          <div class="row">
+            <div class="col-lg-6">
+              <label class="checkbox-inline"><input type="checkbox" name="userisauthor" id="userisauthor" disabled checked=""/>Author</label>
+              <label class="checkbox-inline"><input type="checkbox" name="useriseditor" id="useriseditor" />Editor</label>
+            </div>
+          </div>
+          
+          <!--           Attributes           -->
+          
+          <table width="100%" align="center" >
+            <tr valign="top">                           
+              <td width="100%" align="left">
+              <br/>
+                <legend class="text-left">Others Attributes </legend>
+                <fieldset id="attributes">
+                  <fieldset id="at1">
+                    <table id="table1">
+                      <tr align="left" id="frow1">                                                                       
+                        <td id="std1" > <input class="form-control" align="left" type="text" placeholder="Attribute Name" size="10" id="name1" name="name1"/></td>
+                      </tr> 
+                      <tr id="srow1">                        
+                        <td id="ftd1"><input class="form-control" align="left" type="text" placeholder="Value" size="30" id="value1" name="value1" /></td>
+                      </tr>
+                    </table>  
+                  </fieldset>
+                </fieldset>
+              </td>
+            </tr>
+          </table>
+          <div class="col-lg-6 text-right">
+            <input class="btn btn-sm btn-primary" type="button" value="+" id="otherAtributes"/>
+            <input class="btn btn-sm btn-primary" type="button" value="-" id="remove"/>  
+          </div>
+          
+          
+          <!--            Authors and Editor          -->
+          
+          <table width="100%" align="center" >
+            <tr valign="top">                           
+              <td width="50%" align="left">
+              <br/>
+                <legend class="text-left">Authors and Editors</legend>
+                <fieldset id="authors">
+                  <fieldset id="a1">
+                    <table id="tableauthors1">
+                      <tr align="left" id="fauthrow1">
+                        <td align="left"  id="auth_td1"><label>Name </label></td>
+                        <td id="2auth_td1"><input align="left" type="text" class="form-control" id="A_name1" name="A_name1" size="50" > </input></td>
+                      </tr> 
+                      <tr id="sauthrow1">
+                        <td align="left" id="3auth_td1"><label>ID </label></td>
+                        <td id="4auth_td1"> <input align="left" type="text" class="form-control" id="A_id1" name="A_id1" size="50" /></td>
+                      </tr>
+                      <tr id="typerow1">
+                        <td id="td1type1">
+                          <label class="checkbox-inline"><input type="checkbox" name="isauthor1" id="isauthor1" checked=""/><text>Author</text></label>
+                        </td>
+                        <td id="td2type2">
+                          <label class="checkbox-inline"><input type="checkbox" name="iseditor1" id="iseditor1"/><text>Editor</text></label>
+                        </td>                        
+                      </tr>
+                    </table>  
+                  </fieldset>
+                </fieldset>
+              </td>
+            </tr>
+          </table>
+          <div class="col-lg-6 text-right">
+            <input align="left" class="btn btn-sm btn-primary" type="button" value="+" id="AddAuthors"/>
+            <input align="left" class="btn btn-sm btn-primary" type="button" value="-" id="RemoveAuhtors"/>
+          </div>
+          
+          <!--            FILES           -->
+          
+          <table width="100%" align="center" >
+            <tr valign="top">                           
+              <td width="50%" align="left">
+              <br/>
+                <legend class="text-left">Files</legend>
+                <fieldset id="file">
+                  <fieldset id="f1">
+                    
+                    <table id="tablefiles1">
+                      <tr align="left" id="f_filesrow1">
+                        <input align="left" type="file" name="file1" id="file1"/>
+                      </tr> 
+                      <tr id="s_filesrow1">
+                        <td id="2files_td1"> <input align="left" type="text" placeholder="Description" size="50" id="filedesc1" name="filedesc1" class="form-control"/></td>
+                      </tr>
+                    </table>  
+                    
+                  </fieldset>
+                </fieldset>
+              </td>
+            </tr>
+          </table>                                       
+          <br/>          
+          <div class="row">
+            <div class="col-lg-6 text-right">
+              <input align="left" class="btn btn-sm btn-primary" type="button" value="+" id="morefiles"/>
+              <input align="left" class="btn btn-sm btn-primary" type="button" value="-" id="removefiles"/>
+            </div>
+          </div> 
+          <br/>
+          <div class="row">
+            <div class="text-left">
+              <button class="btn btn-success btn-sm" type="button" id="send">Insert</button>
+            </div>
+          </div>            
+        </form>
+        <!-- Modal -->
+        <div class="modal fade bs-modal-sm" id="loadingmsg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">               
+              <div class="modal-body text-center">
+                Uploading...
+              </div>                
+            </div>
+          </div>
+        </div>
+      </div>        
+    </div>
+    
+       
+
+      </div><!-- /#page-wrapper -->
+
+    </div><!-- /#wrapper -->
+
+    <!-- JavaScript -->
+    <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/pubs.js"></script>
+    <script src="js/functions.js"></script>
+    <script src="js/jquery.multiple.select.js"></script>
+    <script src="js/cookies.js"></script>
+
+    <!-- Page Specific Plugins -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
+    <script src="js/morris/chart-data-morris.js"></script>
+    <script src="js/tablesorter/jquery.tablesorter.js"></script>
+    <script src="js/tablesorter/tables.js"></script>
+    <!--[if lte IE 8]><script src="js/excanvas.min.js"></script><![endif]-->
+	<script src="js/flot/jquery.flot.js"></script>
+	<script src="js/flot/jquery.flot.tooltip.min.js"></script>
+	<script src="js/flot/jquery.flot.resize.js"></script>
+	<script src="js/flot/jquery.flot.pie.js"></script>
+	<script src="js/flot/chart-data-flot.js"></script>
+
+  <script>
+      $("#keywordsselect").multipleSelect({
+          filter: true,
+          selectAll: false            
+      });                  
+  </script>
+  </body>
+</html>

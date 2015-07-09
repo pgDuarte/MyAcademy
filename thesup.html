@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta name="description" content="">
+                    <meta name="author" content="">
+                        
+                        <title>Supervisions - myAcademy</title>
+                        
+                        <!-- Bootstrap core CSS -->
+                        <link href="css/bootstrap.css" rel="stylesheet"/>
+                        <link href="css/bootstrap-combobox.css" rel="stylesheet" media="screen" type="text/css"/>
+                            
+                            <!-- Add custom CSS here -->
+                            <link href="css/sb-admin.css" rel="stylesheet"/>
+                                <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css"/>
+                                    <!-- Page Specific CSS -->
+                                    <link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css"/>
+                                        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"/>
+                                                                                        
+                                            <!-- JavaScript -->
+                                            <script src="js/jquery-1.10.2.js"></script>
+                                            <script src="js/bootstrap.js"></script>
+
+                                            
+                                            <link href="js/select2-3.4.5/select2.css" rel="stylesheet"/>
+                                            <script src="js/select2-3.4.5/select2.js"></script>
+                                            
+                                            
+                                            <script type="text/javascript">
+                                            
+                                            function get_XmlHttp() {
+                                                    // create the variable that will contain the instance of the XMLHttpRequest object (initially with null value)
+                                                    var xmlHttp = null;
+                                                    
+                                                    if(window.XMLHttpRequest) {		// for Forefox, IE7+, Opera, Safari, ...
+                                                    xmlHttp = new XMLHttpRequest();
+                                                    }
+                                                    else if(window.ActiveXObject) {	// for Internet Explorer 5 or 6
+                                                    xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+                                                    }
+                                                    
+                                                    return xmlHttp;
+                                            }
+                                            
+                                          
+                                                    
+                                            function listallsupervisionsByUser()
+                                            {
+                                                  var userID = getUserID();
+                                                  var request =  get_XmlHttp();	
+                                                  
+                                                  
+                                                  var formData = new FormData();
+                                                  formData.append('supervisionsfunction', 'listAllsupervisionsByUser');
+                                                  formData.append('id', userID);
+                                                  
+                                                  request.open("POST", "php/listsupervisions.php", true);			// define the request
+                                                  request.send(formData);		// sends data
+                                                  
+                                                  request.onreadystatechange = function() {
+                                                  if (request.readyState == 4) {
+                                                     document.getElementById("listallsupervisions").innerHTML = request.responseText;
+                                                  }
+                                                  }
+                                            }
+                                            
+                                                                                         //create keywords form
+                                                    function listselect(idcombobox) {
+                                                      var request =  get_XmlHttp();		// call the function for the XMLHttpRequest instance         
+                                                      // create the URL with data that will be sent to the server (a pair index=value)
+                                                     
+                                                      var formData = new FormData();
+                                                      formData.append('supervisionsfunction', idcombobox);
+                                                      formData.append('id', getUserID());
+                                                  
+                                                       request.open("POST", "php/listsupervisions.php", true);			// define the request
+                                                       request.send(formData);		// sends data
+                                                  
+                                                      // Check request status
+                                                      // If the response is received completely, will be transferred to the HTML tag with tagID
+                                                      request.onreadystatechange = function() {
+                                                        if (request.readyState == 4) {
+                                                          document.getElementById(idcombobox).innerHTML = request.responseText;          
+                                                          //$('#combobox').multipleSelect('refresh');
+                                                        }
+                                                      }           
+                                                    }
+                                                    
+                                           
+     
+                                             function sendqueries(query)
+                                             {
+                                                        var userID = getUserID();
+                                                        var request =  get_XmlHttp();	
+
+                                                        var formData = new FormData();
+                                                        formData.append('supervisionsfunction', 'lisSupByquery');
+                                                        formData.append('id', userID);
+                                                        formData.append('query', query);
+                                                        
+                                                        request.open("POST", "php/listsupervisions.php", true);			// define the request
+                                                        request.send(formData);		// sends data
+                                                        
+                                                        request.onreadystatechange = function() {
+                                                        if (request.readyState == 4) {
+                                                          
+                                                           document.getElementById("listallsupervisions").innerHTML = request.responseText;
+                                                        }
+                                                        }
+                                                          
+                                               }
+                                               
+                                              function searchbytitle()
+                                             {
+                                                   var IDuser= getUserID();
+                                                   var e = document.getElementById("comboboxtitle"); // vai buscar o valor que está selecionado
+                                                   var title = e.options[e.selectedIndex].value;
+                                                   if(title){
+                                             
+                                                   var query = "SELECT thesup.type, thesup.idthesup, thesup.status, thesup.inst, thesup.beginyear, thesup.endyear, thesup.cosupname, thesup.cosupinst, document.title, document.doi, student.name, student.idstudent, student.description, student.address, student.email, student.linkedin, users.name as username from thesup, document, student, users where document.title = '"+title+"' and thesup.idusers = users.idusers and users.idusers = '"+IDuser+"' and document.iddocument = thesup.iddocument and student.idstudent = document.idstudent;"; 
+                                                   sendqueries(query);
+                                                   }
+                                                   else {listallsupervisionsByUser();}
+                                             }
+      
+      
+                                               function search()
+                                               {
+                                               
+                                                    //tem de receer o id do user
+                                                    
+                                                        var e = document.getElementById("comboboxkeywords"); // vai buscar o valor que está selecionado
+                                                        var idkeyword = e.options[e.selectedIndex].value;
+                                                       
+
+                                                        var d = document.getElementById("comboboxstatus"); // vai buscar o valor que está selecionado
+                                                        var idstatus = d.options[d.selectedIndex].value;
+                                                                                                             
+                                                     if(idkeyword){
+                                                             if(idstatus)
+                                                             {
+                                                              var query = " SELECT distinct thesup.idthesup, thesup.type,  thesup.status, thesup.inst, thesup.beginyear, thesup.endyear, thesup.cosupname, thesup.cosupinst, document.title, document.doi, student.name, student.idstudent, student.description, student.address, student.email, student.linkedin, users.name as username from thesup, document, student, users, supkeyword, keywords where thesup.idusers = users.idusers and users.idusers = '"+getUserID()+"' and document.iddocument = thesup.iddocument and student.idstudent = document.idstudent and thesup.idthesup = supkeyword.idthesup and keywords.name = '"+idkeyword+"' and keywords.idkeywords=supkeyword.idkeywords and thesup.status='"+idstatus+"' order by thesup.status;";
+                                                              sendqueries(query);
+                                                                // idkeyword e idstatus
+                                                             }
+                                                             else{
+                                                             
+                                                              var query = " SELECT distinct thesup.idthesup, thesup.type,  thesup.status, thesup.inst, thesup.beginyear, thesup.endyear, thesup.cosupname, thesup.cosupinst, document.title, document.doi, student.name, student.idstudent, student.description, student.address, student.email, student.linkedin, users.name as username from thesup, document, student, users, supkeyword, keywords where thesup.idusers = users.idusers and users.idusers = '"+getUserID()+"' and document.iddocument = thesup.iddocument and student.idstudent = document.idstudent and thesup.idthesup = supkeyword.idthesup and keywords.idkeywords=supkeyword.idkeywords and keywords.name = '"+idkeyword+"' order by thesup.status;";
+                                                              sendqueries(query);
+                                                             // só por idKeyword
+                                                             }
+                                                     } else if(idstatus) {
+                                                     
+                                                              var query = " SELECT distinct thesup.idthesup, thesup.type,  thesup.status, thesup.inst, thesup.beginyear, thesup.endyear, thesup.cosupname, thesup.cosupinst, document.title, document.doi, student.name, student.idstudent, student.description, student.address, student.email, student.linkedin, users.name as username from thesup, document, student, users where thesup.idusers = users.idusers and users.idusers = '"+getUserID()+"' and document.iddocument = thesup.iddocument and student.idstudent = document.idstudent and thesup.idthesup = supkeyword.idthesup and thesup.status='"+idstatus+"' order by thesup.status;";
+                                                              sendqueries(query);
+                                                             // só idstatus
+                                                     }
+                                                      else { 
+                                                      listallsupervisionsByUser();
+                                                      }
+                                               
+                                               }
+                                            </script>
+                                            
+                                            
+                                            
+    </head>
+    
+ 
+    
+    <body onload="listselect('comboboxkeywords'), listselect('comboboxtitle'),getCookie(),listallsupervisionsByUser(),isAdmin()" >
+        
+        
+        
+        <div id="wrapper">
+            
+            <!-- Sidebar -->
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">myAcademy</a>
+                </div>
+                
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav side-nav">
+                        <li><a href="myprofile.html"><i class="fa fa-user"></i> Personal Information</a></li>
+                        
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" id="dmopen"><i class="fa fa-book"></i> Publications <b class="caret"></b></a>              
+                            <ul class="dropdown-menu">
+                                <li><a href="publications.html"><i class="fa fa-list"></i> List</a></li>
+                                <li><a href="addpublication.html"><i class="fa fa-plus"></i> Insert</a></li>
+                                <li><a href="editpublication.html"><i class="fa fa-edit"></i> Edit</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-eye"></i> Thesis Examination <b class="caret"></b></a>              
+                            <ul class="dropdown-menu ">
+                                <li><a href="theexam.html"><i class="fa fa-list"></i> List</a></li>
+                                <li><a  href="addexam.html"><i class="fa fa-plus"></i> Insert</a></li>
+                                <li><a href="editexam.html"><i class="fa fa-edit"></i> Edit</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-road"></i> Thesis Supervision <b class="caret"></b></a>              
+                            <ul class="dropdown-menu collapse in"  >
+                                <li><a class="active"  href="thesup.html"><i class="fa fa-list"></i> List</a></li>
+                                <li><a href="addsup.html"><i class="fa fa-plus"></i> Insert</a></li>
+                                <li><a href="editsup.html"><i class="fa fa-edit"></i> Edit</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-tasks"></i> Teaching <b class="caret"></b></a>              
+                            <ul class="dropdown-menu " >
+                                <li><a href="teaching.html"><i class="fa fa-list"></i> List courses</a></li>
+                                <li><a href="disciplines.html"><i class="fa fa-edit"></i> Disciplines</a></li>
+                                <li><a href="content.html"><i class="fa fa-file"></i> Content</a></li>                                
+                            </ul>
+                        </li>
+                        
+                        <li class="dropdown" id="adminpanel">              
+                        </li>
+                    </ul>
+                    
+                    <!-- User toolbar -->
+                    <ul class="nav navbar-nav navbar-right navbar-user">                        
+                        <li class="dropdown user-dropdown"  id="dyn_user">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
+                                <li><a href="#"><i class="fa fa-edit"></i> Edit Personal Info </a></li>              
+                                <li class="divider"></li>
+                                <li><a href="#"><i class="fa fa-power-off"></i> Log Out</a></li>
+                                <li><a href="#"><i class="fa fa-question"></i> Support</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </nav>
+            
+            <div id="page-wrapper">
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <h1>Thesis Supervision</h1>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.row -->
+                
+                <div class="row">
+                    <div class="col-lg-12" id="indice">
+                        <ol class="breadcrumb">
+                        </ol>
+                    </div>
+                </div>
+                
+                <div class="row">
+
+                    <div class="col-lg-3">  
+                        <label>Keyword</label>
+                        <select id="comboboxkeywords" style="width:250px;">
+                        </select>
+                    </div>
+                              
+                    <div class="col-lg-3">   
+                        <label>Status</label>
+                        <select id="comboboxstatus" style="width:250px;"> 
+                            <option> </option>
+                            <option value="concluded">Concluded</option>
+                            <option value="undergoing">Undergoing</option>
+                        </select>
+                    </div>
+
+                </div>
+                
+                <div class="row">
+                    <div class="col-lg-7 text-right"> 
+                       
+                            <button type="button" class="fa fa-search btn btn-inverse" onclick="search();"></button> 
+                        <hr/>
+                    </div>
+                </div>
+                
+                <div class="row">
+                <div class="col-lg-3">   
+                    <label>Title</label>
+                    <select id="comboboxtitle" style="width:250px;"> 
+                        <option> </option>
+                    </select>
+                </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-lg-4 text-right"> 
+                        
+                        <button type="button" class="fa fa-search btn btn-inverse" onclick="searchbytitle();">Title</button> 
+                        <hr/>
+                    </div>
+                </div>
+                
+                
+                
+               
+                
+                <div class="row">
+                    <div class="col-lg-12"> 
+                        <p></br></p>
+                    </div>
+                </div>
+                
+             
+                
+                <div class="row">                                                           
+                    <div class="col-lg-12" id="listallsupervisions"> 
+                        
+                        
+                    </div>  
+                    
+                </div>
+                
+            </div><!-- /#page-wrapper -->
+            
+        </div><!-- /#wrapper -->
+        
+
+  
+
+        
+        <script>
+        $(document).ready(function() { $("#comboboxkeywords").select2(); });
+        </script>
+        
+        <script>
+        $(document).ready(function() { $("#comboboxstatus").select2(); });
+        </script>
+        
+        <script>
+        $(document).ready(function() { $("#comboboxtitle").select2(); });
+        </script>
+     
+        
+        
+        
+        <!-- Page Specific Plugins -->
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+        <script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
+        <script src="js/morris/chart-data-morris.js"></script>
+        <script src="js/tablesorter/jquery.tablesorter.js"></script>
+        <script src="js/tablesorter/tables.js"></script>    
+        <!--  <script src="js/excanvas.min.js"></script> -->
+        <script src="js/flot/jquery.flot.js"></script>
+        <script src="js/flot/jquery.flot.tooltip.min.js"></script>
+        <script src="js/flot/jquery.flot.resize.js"></script>
+        <script src="js/flot/jquery.flot.pie.js"></script>
+        <script src="js/flot/chart-data-flot.js"></script>
+        <script src="js/flot/chart-data-flot.js"></script>
+        <script src="js/cookies.js"></script>
+        
+
+
+        
+    </body>
+</html>

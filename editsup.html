@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="description" content=""/>
+        <meta name="author" content=""/>
+        
+        <title>Thesis Supervision - myAcademy</title>
+        
+        <!-- Bootstrap core CSS -->
+        <link href="css/bootstrap.css" rel="stylesheet"/>
+        <link href="css/multiple-select.css" rel="stylesheet"/>
+        
+        <!-- Add custom CSS here -->
+        <link href="css/sb-admin.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css"/>
+        <!-- Page Specific CSS -->
+        <link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css"/>
+        
+        <script type="text/javascript">
+            
+            
+            
+             function listAllSupervisionsforSelect()
+                                            {
+                                                  var userID = getUserID();
+                                                  var request =  get_XmlHttp();	
+                                                  
+                                                  var formData = new FormData();
+                                                  formData.append('supervisionsfunction', 'listAllSupervisionsforSelect');
+                                                  formData.append('id', userID);
+                                                  
+                                                  request.open("POST", "php/editsup.php", true);			// define the request
+                                                  request.send(formData);		// sends data
+                                                  
+                                                  request.onreadystatechange = function() {
+                                                     if (request.readyState == 4) {
+                                                        document.getElementById("supselect").innerHTML = request.responseText;
+                                                     }
+                                                  }
+                                            }
+                                            
+           function supatributtes(userID,idsup)
+           {
+           
+                   var request =  get_XmlHttp();	
+                                                  
+                   var formData = new FormData();
+                   formData.append('supervisionsfunction', 'atributtes');
+                   formData.append('id', userID);
+                   formData.append('idsup', idsup);
+                                                  
+                   request.open("POST", "php/editsup.php", true);			// define the request
+                   request.send(formData);		// sends data
+                                                  
+                   request.onreadystatechange = function() {
+                   if (request.readyState == 4) {
+                          document.getElementById("attributes").innerHTML = request.responseText;
+                   }
+                   }
+           
+           }
+           
+           function student(userID, idsup)
+           {
+           
+                   var request =  get_XmlHttp();	
+                                                  
+                   var formData = new FormData();
+                   formData.append('supervisionsfunction', 'students');
+                   formData.append('id', userID);
+                   formData.append('idsup', idsup);
+                                                  
+                   request.open("POST", "php/editsup.php", true);			// define the request
+                   request.send(formData);		// sends data
+                                                  
+                   request.onreadystatechange = function() {
+                   if (request.readyState == 4) {
+                          document.getElementById("student").innerHTML = request.responseText;
+                   }
+                   }
+           
+           }
+           
+           function documentx(userID, idsup)
+           {
+           
+                   var request =  get_XmlHttp();	
+                                                  
+                   var formData = new FormData();
+                   formData.append('supervisionsfunction', 'document');
+                   formData.append('id', userID);
+                   formData.append('idsup', idsup);
+                                                  
+                   request.open("POST", "php/editsup.php", true);			// define the request
+                   request.send(formData);		// sends data
+                                                  
+                   request.onreadystatechange = function() {
+                   if (request.readyState == 4) {
+                          document.getElementById("titledocument").innerHTML = request.responseText;
+                   }
+                   }
+           
+           }
+                                            
+                                            
+            function listsupinfo(idsup)
+            {
+                if(idsup =="")
+                    return;
+                    
+                 var userID = getUserID();
+                // examkeywords(idsup);
+                  supatributtes(userID,idsup);
+                  student(userID, idsup);
+                  documentx(userID, idsup);
+                
+            
+            }
+            
+            function examkeywords(idexam)
+            {
+                
+                   
+                 var request =  get_XmlHttp();		// call the function for the XMLHttpRequest instance         
+                 // create the URL with data that will be sent to the server (a pair index=value)
+                 
+                  var formData = new FormData();
+                  formData.append('examinationsfunction', 'listexamkeywordsbyexam');
+                  formData.append('idexam', idexam);
+                  
+             
+                
+               
+                 request.open("POST", "php/editexam.php", true);			// define the request
+                 request.send(formData);		// sends data
+                 
+                 
+                    
+                 // Check request status
+                 // If the response is received completely, will be transferred to the HTML tag with tagID
+                 request.onreadystatechange = function() {
+                   if (request.readyState == 4) {                                   
+                       $('#keywordsselect').multipleSelect('setSelects',request.responseText.split(" "));
+                   }
+                 }   
+            
+            }
+            
+           function updateAttributessup()
+           {
+                   var request =  get_XmlHttp();	
+                                                  
+                   var formData = new FormData();
+                   
+                   var userID = getUserID();
+                   
+                   var e = document.getElementById("supselect"); // vai buscar o valor que está selecionado
+                   var idsup = e.options[e.selectedIndex].value;
+                   var k = document.getElementById("type"); // vai buscar o valor que está selecionado
+                   var type = k.options[k.selectedIndex].value;
+                   var j = document.getElementById("status"); // vai buscar o valor que está selecionado
+                   var status = j.options[j.selectedIndex].value;
+                   
+                   var inst = $('#inst').val();
+                   var beginyear = $('#beginyear').val();
+                   var endyear = $('#endyear').val();
+                   var cosupname = $('#cosupname').val();
+                   var cosupinst = $('#cosupinst').val();
+                   
+                 
+                   
+                   var query = "";
+                   
+                   if(inst.length == 0){
+                    $('#inst').focus();
+                    alert("Input is empty!");
+                    return;
+                   };
+                   
+                    if(beginyear.length == 0){
+                     $('#beginyear').focus();
+                     alert("Input is empty!");
+                     return;
+                    };  
+                   
+                   
+                   if (endyear=='')
+                   {
+                        query = "UPDATE thesup SET inst='"+inst+"', status='"+status+"', type='"+type+"', beginyear='"+beginyear+"', cosupname='"+cosupname+"', cosupinst='"+cosupinst+"' where idthesup ='"+idsup+"';";
+                   }else query = "UPDATE thesup SET inst='"+inst+"', status='"+status+"', type='"+type+"', beginyear='"+beginyear+"', endyear='"+endyear+"', cosupname='"+cosupname+"', cosupinst='"+cosupinst+"' where idthesup ='"+idsup+"';";
+
+                   
+          
+               
+                  
+                       
+                   formData.append('supervisionsfunction', 'updateAttributessup');
+                   formData.append('query', query);
+                   formData.append('idsup', idsup);
+                                                  
+                   request.open("POST", "php/editsup.php", true);			// define the request
+                   request.send(formData);		// sends data
+                                                  
+                   request.onreadystatechange = function() {
+                   if (request.readyState == 4) {
+                          supatributtes(userID,idsup)
+                          document.getElementById("alert1").innerHTML = request.responseText;
+                   }
+                   }
+           
+           }
+           
+           function updateStudentsup()
+           {
+                   var request =  get_XmlHttp();	
+                                                  
+                   var formData = new FormData();
+                   
+                   var userID = getUserID();
+                   
+                   var e = document.getElementById("supselect"); // vai buscar o valor que está selecionado
+                   var idsup = e.options[e.selectedIndex].value;
+                   
+                   var name = $('#name').val();
+                   var number = $('#number').val();
+                   var email = $('#email').val();    
+                   var linkedin = $('#linkedin').val();    
+                   var description = $('#description').val();
+                   var address = $('#address').val(); 
+                   var idstudent = $('#idstudentx').val(); 
+                  
+                    
+                   
+                       if(name.length == 0){
+                         $('#name').focus();
+                         alert("Input is empty!");
+                         return;
+                        }; 
+                        
+                         if(number.length == 0){
+                         $('#number').focus();
+                         alert("Input is empty!");
+                         return;
+                        };   
+                        
+                   
+                   query = "UPDATE student SET name='"+name+"', studentNumber='"+number+"', description='"+description+"', address='"+address+"', email='"+email+"', linkedin='"+linkedin+"' where idstudent ='"+idstudent+"';";
+                   
+                   formData.append('supervisionsfunction', 'updateStudentsup');
+                   formData.append('query', query);
+                                                  
+                   request.open("POST", "php/editsup.php", true);			// define the request
+                   request.send(formData);		// sends data
+                                                  
+                   request.onreadystatechange = function() {
+                   if (request.readyState == 4) {
+                          student(userID, idsup);
+                          document.getElementById("alert2").innerHTML = request.responseText;
+                   }
+                   }
+                      
+           }
+           
+           function updatedocuments()
+           {
+                var userID = getUserID();
+                var request =  get_XmlHttp();	
+                                                  
+                var formData = new FormData();
+                
+                var e = document.getElementById("supselect"); // vai buscar o valor que está selecionado
+                var idsup = e.options[e.selectedIndex].value;
+                var filetitle = $('#filetitle').val();  
+                var file = document.getElementById('file');
+                var doi = $('#doi').val();   
+                
+                
+                
+                
+                formData.append('supervisionsfunction', 'updateDocumentsup');
+                formData.append('idsup', idsup);
+                formData.append('filetitle',filetitle);
+                formData.append('file', file.files[0]);
+                formData.append('doi',doi);
+                formData.append('type',"thesis");
+                
+                                                    
+                request.open("POST", "php/editsup.php", true);			// define the request
+                request.send(formData);		// sends data
+                                                  
+                request.onreadystatechange = function() {
+                if (request.readyState == 4) {
+                     documentx(userID, idsup);
+                      
+                     document.getElementById("fileupdatedocument").innerHTML = "<input type=\"file\" name=\"file\" id=\"file\"/>";
+                     document.getElementById("alert3").innerHTML = request.responseText;
+                    
+                     document.getElementById("doiactual").innerHTML = "<input type=\"text\" name=\"doi\" id=\"doi\" placeholder=\"ex: repositorium.sdum.uminho.pt\" class=\"form-control\"/> ";  
+                }
+                }
+            
+            
+           }
+            
+            
+        </script>
+        
+    </head>
+  
+    
+    <body onload="isAdmin(),getCookie(),listAllSupervisionsforSelect()">
+        <div id="wrapper">
+            
+            <!-- Sidebar -->
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">myAcademy</a>
+                </div>
+                
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav side-nav">
+                        <li><a href="myprofile.html"><i class="fa fa-user"></i> Personal Information</a></li>
+                        
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" id="dmopen"><i class="fa fa-book"></i> Publications <b class="caret"></b></a>              
+                            <ul class="dropdown-menu">
+                                <li><a href="publications.html"><i class="fa fa-list"></i> List</a></li>
+                                <li><a href="addpublication.html"><i class="fa fa-plus"></i> Insert</a></li>
+                                <li><a href="editpublication.html"><i class="fa fa-edit"></i> Edit</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-eye"></i> Thesis Examination <b class="caret"></b></a>              
+                            <ul class="dropdown-menu">
+                                <li><a href="theexam.html"><i class="fa fa-list"></i> List</a></li>
+                                <li><a href="addexam.html"><i class="fa fa-plus"></i> Insert</a></li>
+                                <li><a href="editexam.html"><i class="fa fa-edit"></i> Edit</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-road"></i> Thesis Supervision <b class="caret"></b></a>              
+                            <ul class="dropdown-menu collapse in"  >
+                                <li><a href="thesup.html"><i class="fa fa-list"></i> List</a></li>
+                                <li><a href="addsup.html"><i class="fa fa-plus"></i> Insert</a></li>
+                                <li><a class="active" href="editsup.html"><i class="fa fa-edit"></i> Edit</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-tasks"></i> Teaching <b class="caret"></b></a>              
+                            <ul class="dropdown-menu">
+                                <li><a href="teaching.html"><i class="fa fa-list"></i> List courses</a></li>
+                                <li><a href="disciplines.html"><i class="fa fa-edit"></i> Disciplines</a></li>
+                                <li><a href="content.html"><i class="fa fa-file"></i> Content</a></li>                                
+                            </ul>
+                        </li>
+                        
+                        <li class="dropdown" id="adminpanel">              
+                        </li>
+                    </ul>
+                    
+                    <!-- User toolbar -->
+                    <ul class="nav navbar-nav navbar-right navbar-user">                        
+                        <li class="dropdown user-dropdown"  id="dyn_user">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
+                                <li><a href="editprofile.html"><i class="fa fa-edit"></i> Edit Personal Info </a></li>              
+                                <li class="divider"></li>
+                                <li><a href="#"><i class="fa fa-power-off"></i> Log Out</a></li>
+                                <li><a href="#"><i class="fa fa-question"></i> Support</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </nav>
+            
+            <div id="page-wrapper">
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1>Thesis Supervision  <small>Update your supervision</small></h1>
+                        <ol class="breadcrumb text-right">
+                                
+                        </ol>                         
+                    </div>
+                </div><!-- /.row -->
+                
+                <div class="row">
+                    
+                    <div class="col-lg-12"> 
+                        <form role="form" action="php/thesup.php" method="post" enctype="multipart/form-data" id="supervision" >           
+                            
+        <!-- __________________________________________Thesis Supervisions_________________________________________________ -->                             
+                            
+                            
+                            <legend class="text-left">Attributes</legend>
+                            <div class="col-lg-8" id="attributes">
+                             <div class="row" >
+                                <div class="col-lg-8">
+                                    <label>Institution</label>            
+                                    <input class="form-control" name="inst" id="inst" type="text" required=""/>                                  
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <label>Degree</label>            
+                                    <select class="form-control" name="type" id="type">    
+                                        <option value="msc">MSc</option>
+                                        <option value="phd">PhD</option>                
+                                    </select>                                                
+                                </div>
+                                
+                                <div class="col-lg-3">
+                                    <label>Status</label>                     
+                                    <select class="form-control" name="status" id="status" onchange="$('#endyeardiv').toggle();">    
+                                        <option value="concluded">Concluded</option>
+                                        <option value="undergoing">Undergoing</option>                
+                                    </select>                                   
+                                </div>                                                                  
+                            </div>
+                            <br/>
+                            
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <label for="beginyear">Begin year</label>            
+                                    <div class="form-group"> 
+                                        <input id="beginyear" class="form-control" name="beginyear" type="text" placeholder="ex: 2008"/>
+                                    </div>            
+                                </div>
+                                
+                                <div class="col-lg-3" id="endyeardiv">
+                                    <label for="endyear">End year</label>            
+                                    <div class="form-group"> 
+                                        <input id="endyear" class="form-control" name="endyear" type="text" placeholder="ex: 2014" />
+                                    </div>            
+                                </div>   
+                            </div>
+                            
+                        <!--    <div class="row">
+                                <div class="col-lg-4">                                    
+                                    <label for="keywordsselect">Keywords</label>
+                                    <select class="form-control" id="keywordsselect" multiple="multiple">                                                                             
+                                    </select>                                    
+                                </div>
+                            </div>-->
+                            <br/>
+                            <!--            Co-supervisor           -->                            
+                            <a id="Acosup">Add co-supervisor</a>
+                            <br/>
+                            <div id="cosupdiv">
+                                <legend class="text-left">Co-Supervisor</legend>                            
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <label for="cosupname">Name</label>
+                                        <input id="cosupname" name="cosupname" class="form-control" type="text"/>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <label for="cosupinst">Institution</label>
+                                        <input id="cosupinst" name="cosupinst" class="form-control" type="text"/>
+                                    </div>
+                                </div>                                                                                                                
+                            </div>
+                            </div>
+                            
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <!--  <script>listAllExaminationsforSelect();</script>-->
+                                    <select id='supselect' class="form-control" multiple="" style="height: 200px;" onchange="listsupinfo(this.value)">
+                                        
+                                    </select>
+                                </div>  
+                                
+                            </div>
+                            
+                            <div class="col-lg-8">
+                                <div class="row">
+                                    <div class="col-lg-8 text-right">
+                                        <button class="btn btn-info btn-xs" type="button" onclick="updateAttributessup()">
+                                            * Update
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-lg-6" id="alert1"></div>
+                            
+                            <br/>
+                                                                          
+                            <br/>
+                            <!--            Student           -->                   
+                            
+                            <legend class="text-left">Student</legend>
+                            <div class="col-lg-8" id="student" >
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <label for="name">Name</label>
+                                    <input id="name" name="name" class="form-control" type="text" required=""/>
+                                </div>
+                                <div class="col-lg-2">
+                                    <label for="number">Number</label>
+                                    <input id="number" name="number" class="form-control" type="text"/>
+                                </div>
+                            </div>
+                            
+                            <br/>
+                            <a id="click">Click here to add more info about the student</a>
+                            <br/>
+                            
+                            <div id="program">            
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <label>Email</label>
+                                        <input name="email" id="email" class="form-control" type="text"/>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <label>Linkedin</label>
+                                        <input name="linkedin" id="linkedin" class="form-control" type="text"/>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label>Info about the course</label>
+                                        <input name="description" id="description" class="form-control" type="text" placeholder="ex: MIECOM - Universidade do Minho"/>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <label>Website</label>                
+                                        <input name="address" id="address" class="form-control" type="text" placeholder="ex: mecom.eng.uminho.pt"/>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            </div>
+                            
+                            <div class="col-lg-8">
+                                <div class="row">
+                                    <div class="col-lg-8 text-right">
+                                        <button class="btn btn-info btn-xs" type="button" onclick="updateStudentsup()">
+                                            * Update
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <br/>
+                            <div class="col-lg-6" id="alert2"></div>
+                            <br/>
+                            
+                            
+                            <!--            Document          -->
+                            <legend class="text-left">Document</legend> 
+                            <div class="col-lg-8" >
+                            <div class="row">
+                                <div class="col-lg-6" id="titledocument">
+                                    <label for="filetitle">Title</label>
+                                    <input type="text" placeholder="Title" id="filetitle" name="filetitle" class="form-control"/>
+                                </div>
+                            </div>
+                            <br/>
+                            <a onclick="$('#uploadfile').show(),$('#link').hide()">Click here to upload file</a><a onclick="$('#uploadfile').hide(),$('#link').show()"> or here to insert file link</a>
+                            <div class="row" id="uploadfile" style="display:none;">
+                                <div class="col-lg-6" id="fileupdatedocument">
+                                    <input type="file" name="file" id="file"/>              
+                                </div>
+                            </div>
+                            <div class="row" id="link" style="display:none;">
+                                <div class="col-lg-6" id="doiactual">
+                                    <input type="text" name="doi" id="doi" placeholder="ex: repositorium.sdum.uminho.pt" class="form-control"/>              
+                                </div>
+                            </div>
+                            <br/>
+                            <br/>
+                            
+                            </div>
+                            
+                            <div class="col-lg-8">
+                                <div class="row">
+                                    <div class="col-lg-8 text-right">
+                                        <button class="btn btn-info btn-xs" type="button" onclick="updatedocuments()">
+                                            * Update
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-lg-6" id="alert3"></div>
+                            
+                        </form>
+                        <!-- Modal -->
+                        <div class="modal fade bs-modal-sm" id="loadingmsg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">               
+                                    <div class="modal-body text-center">
+                                        Uploading...
+                                    </div>                
+                                </div>
+                            </div>
+                        </div>
+                    </div>        
+                </div>
+                
+                
+                
+            </div><!-- /#page-wrapper -->
+            
+        </div><!-- /#wrapper -->
+        
+        <!-- JavaScript -->
+        <script src="js/jquery-1.10.2.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/functions.js"></script>
+        <script src="js/thesis.js"></script>
+        <script src="js/cookies.js"></script>
+        <script src="js/jquery.multiple.select.js"></script>
+        
+        <!-- Page Specific Plugins -->
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+        <script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
+        <script src="js/morris/chart-data-morris.js"></script>
+        <script src="js/tablesorter/jquery.tablesorter.js"></script>
+        <script src="js/tablesorter/tables.js"></script>
+        <!--[if lte IE 8]><script src="js/excanvas.min.js"></script><![endif]-->
+        <script src="js/flot/jquery.flot.js"></script>
+        <script src="js/flot/jquery.flot.tooltip.min.js"></script>
+        <script src="js/flot/jquery.flot.resize.js"></script>
+        <script src="js/flot/jquery.flot.pie.js"></script>
+        <script src="js/flot/chart-data-flot.js"></script>
+        
+        <!-- onclick show/id -->
+        <script type="text/javascript">      
+      $("#cosupdiv").hide();
+      $("#program").hide();
+      
+      $('#Acosup').click(function() {
+          $('#cosupdiv').toggle();
+      });
+      
+      $('#click').click(function() {
+          $('#program').toggle();
+      });
+      
+      $("#keywordsselect").multipleSelect({
+          filter: true,
+          selectAll: false            
+      });
+    </script>
+        
+    </body>
+</html>

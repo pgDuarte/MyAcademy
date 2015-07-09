@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="description" content=""/>
+        <meta name="author" content=""/>
+        
+        <title>myAcademy</title>
+        
+        <!-- Bootstrap core CSS -->
+        <link href="css/bootstrap.css" rel="stylesheet"/>        
+        
+        <!-- Add custom CSS here -->
+        <link href="css/sb-admin.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css"/>
+        <!-- Page Specific CSS -->
+        
+        <link href="js/select2-3.4.5/select2.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css"/>
+
+    </head>
+    
+    <body onload="">
+
+        <div id="wrapper">
+            
+            <!-- Sidebar -->
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">myAcademy</a>
+                </div>
+                
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav side-nav">
+                        
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" id="dmopen"><i class="fa fa-quote-right"></i> Titles <b class="caret"></b></a>              
+                            <ul class="dropdown-menu">
+                                <li><a onclick="t_sorta()"><i class="fa fa-sort-alpha-asc"></i> Sort Alphabetically</a></li>
+                                <li><a onclick="t_sortt()"><i class="fa fa-clock-o"></i> Sort by Most Recent</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-male"></i> Teachers <b class="caret"></b></a>              
+                            <ul class="dropdown-menu">
+                                <li><a onclick="a_sorta()"><i class="fa fa-sort-alpha-asc"></i> Sort Alphabetically</a></li>
+                                <li><a onclick="a_sortt()"><i class="fa fa-clock-o"></i> Sort by Most Recent</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-bookmark"></i> Courses <b class="caret"></b></a>              
+                            <ul class="dropdown-menu">
+                                <li><a onclick="c_sorta()"><i class="fa fa-sort-alpha-asc"></i> Sort Alphabetically</a></li>
+                                <li><a onclick="c_sortt()"><i class="fa fa-clock-o"></i> Sort by Most Recent</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-star-half-o"></i> MSc Thesis <b class="caret"></b></a>              
+                            <ul class="dropdown-menu">
+                                <li><a onclick="m_sorta()"><i class="fa fa-sort-alpha-asc"></i> Sort Alphabetically</a></li>
+                                <li><a onclick="m_sortt()"><i class="fa fa-clock-o"></i> Sort by Most Recent</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-star"></i> PhD Thesis <b class="caret"></b></a>              
+                            <ul class="dropdown-menu">
+                                <li><a onclick="p_sorta()"><i class="fa fa-sort-alpha-asc"></i> Sort Alphabetically</a></li>
+                                <li><a onclick="p_sortt()"><i class="fa fa-clock-o"></i> Sort by Most Recent</a></li>
+                            </ul>
+                        </li>
+                        
+                        
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-form ">     
+                    <li class="dropdown user-dropdown " >                  
+                        
+                            
+                                <div>
+                               
+                                    <input placeholder="Search by keyword..." class="form-control" type="text" size="30" value="" id="inputString" onkeyup="lookup(this.value);" onblur="fill();" />
+                                </div>
+                                
+                                <div class="suggestionsBox" id="suggestions" style="display: none;">
+                                    
+                                    <div class="suggestionList" id="autoSuggestionsList">
+                                        
+                                    </div>
+                                </div>
+                            
+                        
+                        </li>
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-form  ">     
+                        <button type="button" class="btn btn-default" onclick="kw_search();"><i class="fa fa-search"></i> </button>
+                    </ul>
+                    
+                    <!-- User toolbar -->
+
+                    <ul class="nav navbar-nav navbar-right navbar-user">                       
+                        <li class="dropdown user-dropdown" id="dyn_user">
+                        <input id = "usertype" value = "0" type="hidden"/>
+                            <a href="login.html" class="dropdown-toggle" ><i class="fa fa-sign-in"></i> Sign In </a>    
+                            
+                        </li>
+                    </ul>
+
+
+
+                    
+                </div><!-- /.navbar-collapse -->
+            </nav>
+            
+
+            
+
+                <div id="page-wrapper" >
+
+
+
+                    
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h1>Welcome!</h1>
+                            <ol class="breadcrumb"> 
+                            Welcome to myAcademy, the brand new academic repository! :)            
+                            </ol>
+                        </div>
+                    </div><!-- /.row -->
+                    
+                    <div class="row">
+                        
+                        <div class="col-lg-12"> 
+                                
+                        </div> 
+                            
+                    </div>
+
+                        <div class="panel panel-default">
+                          <div class="panel-body">
+
+                            <div id="file_count">
+                                
+                            </div>
+                            
+                          </div>
+                        </div>   
+                    
+                    
+                    
+                </div><!-- /#page-wrapper -->
+                
+                
+            </div><!-- /#wrapper -->
+        
+        <script src="autoComplete/jquery-1.2.1.pack.js" type="text/javascript"><!--mce:0--></script><script type="text/javascript"><!--mce:1--></script>
+
+        <script src="js/index.js"></script>        
+        <script src="js/functions.js"></script>
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script src="js/index.js"></script>
+        <script src="js/listpubs.js"></script>
+         
+        <script src="js/select2-3.4.5/select2.js"></script>
+         
+        <!-- JavaScript -->
+        <script src="js/jquery-1.10.2.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/pubs.js"></script>
+        
+        <!-- Page Specific Plugins -->
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+        <script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
+        <script src="js/morris/chart-data-morris.js"></script>
+        <script src="js/tablesorter/jquery.tablesorter.js"></script>
+        <script src="js/tablesorter/tables.js"></script>
+        <!--[if lte IE 8]><script src="js/excanvas.min.js"></script><![endif]-->
+        <script src="js/flot/jquery.flot.js"></script>
+        <script src="js/flot/jquery.flot.tooltip.min.js"></script>
+        <script src="js/flot/jquery.flot.resize.js"></script>
+        <script src="js/flot/jquery.flot.pie.js"></script>
+        <script src="js/flot/chart-data-flot.js"></script>
+        
+        <!-- onclick show/id -->
+        <script type="text/javascript">      
+     
+
+      counter();
+
+
+
+        var session_credentials, id, name, profile;
+
+        $.ajax(
+        {
+            url: "php/get_session.php",
+            cache: false,
+            async: false
+        })
+        .done(function(result)
+        {
+            session_credentials = $.parseJSON(result);
+        });
+
+        if (session_credentials != 1) {
+            id = session_credentials.split(':')[0];
+            name = session_credentials.split(':')[1];
+            profile = session_credentials.split(':')[2];
+
+
+            var code = '<input id = "usertype" value = "1" type="hidden"/><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> ' + name + '<b class="caret"></b></a> <ul class="dropdown-menu"><li><a href="myprofile.html"><i class="fa fa-user"></i> Profile</a></li><li><a href="editprofile.html"><i class="fa fa-edit"></i> Edit Personal Info </a></li><li class="divider"></li><li><a onclick="destroyer();"><i class="fa fa-power-off"></i> Log Out</a></li></ul>';
+
+            document.getElementById("dyn_user").innerHTML = code;
+        }
+        
+
+    </script>
+
+
+    <script type="text/javascript">
+    function lookup(inputString) {
+        if(inputString.length == 0) {
+            // Hide the suggestion box.
+            $('#suggestions').hide();
+        } else {
+            $.post("autoComplete/rpc.php", {queryString: ""+inputString+""}, function(data){
+                if(data.length >0) {
+                    $('#suggestions').show();
+                    $('#autoSuggestionsList').html(data);
+                }
+            });
+        }
+    } // lookup
+    
+    function fill(thisValue) {
+        $('#inputString').val(thisValue);
+        setTimeout("$('#suggestions').hide();", 200);
+    }
+</script>
+
+<style type="text/css">
+    
+    .suggestionsBox {
+        position: relative;
+       
+        background-color: #212427;
+        -moz-border-radius: 7px;
+        -webkit-border-radius: 7px;
+        border: 2px solid #000; 
+        color: #999999;
+    }
+
+    
+    .suggestionList {
+        margin: 0px;
+        padding: 0px;
+    }
+    
+    .suggestionList li {
+        
+        margin: 0px 0px 3px 0px;
+        padding: 3px;
+        cursor: pointer;
+    }
+    
+    .suggestionList li:hover {
+        background-color: black;
+    }
+</style>
+        
+    </body>
+</html>

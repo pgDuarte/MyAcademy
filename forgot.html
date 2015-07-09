@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	 
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>myAcademy - Forgot Password</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	 
+	<!-- StyleSheet -->
+	<link rel="stylesheet" href="bs-2.3.2/css/bootstrap.css" />
+	<link rel="stylesheet" href="bs-2.3.2/css/bootstrap-responsive.css" />
+	<link rel="stylesheet" href="bs-2.3.2/css/custom.css" />
+	</head>
+ 
+<body>
+<!-- Navigation Bar -->
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+ 
+            </a>
+ 
+    <a href="index.html" class="brand">myAcademy</a>
+ 
+    </div>
+  </div>
+</div>
+<!-- Navigation Ends -->
+ 
+<!-- Main Container -->
+<section>
+<div class="container login">
+    <div class="row ">
+        <div class="center span4 well">
+            <legend>Forgot Password</legend>
+            <form method="POST" action="php/forgot.php">
+            <input type="text" id="email" class="span4" name="email" placeholder="Email" required/>
+            <button type="submit" name="submit" class="btn btn-primary btn-block">Send</button>
+            </form>
+        </div>
+    </div>
+</div>
+<p class="text-center muted ">&copy; Copyright 2014 - myAcademy</p>
+</section>
+<!-- Main Container Ends -->
+
+<!-- JavaScript -->
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="js/bootstrap.js"></script>
+</body>
+</html>

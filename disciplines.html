@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="eng">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="description" content=""/>
+        <meta name="author" content=""/>
+        
+        <title>Disciplines - myAcademy</title>
+        
+        <!-- Bootstrap core CSS -->
+        <link href="css/bootstrap.css" rel="stylesheet"/>
+        
+        <!-- Add custom CSS here -->
+        <link href="css/sb-admin.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css"/>
+        <!-- Page Specific CSS -->
+        <link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css"/>
+    </head>
+    
+    <body onload="listdisciplines('php/disciplines.php','disciplineselect','disciplineselect', getCookie(), isAdmin())">
+        
+        <div id="wrapper">
+            
+            <!-- Sidebar -->
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">myAcademy</a>
+                </div>
+                
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav side-nav">
+                        <li><a href="myprofile.html"><i class="fa fa-user"></i> Personal Information</a></li>
+                        
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" id="dmopen"><i class="fa fa-book"></i> Publications <b class="caret"></b></a>              
+                            <ul class="dropdown-menu">
+                                <li><a href="publications.html"><i class="fa fa-list"></i> List</a></li>
+                                <li><a href="addpublication.html"><i class="fa fa-plus"></i> Insert</a></li>
+                                <li><a href="editpublication.html"><i class="fa fa-edit"></i> Edit</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-eye"></i> Thesis Examination <b class="caret"></b></a>              
+                            <ul class="dropdown-menu">
+                                <li><a href="theexam.html"><i class="fa fa-list"></i> List</a></li>
+                                <li><a href="addexam.html"><i class="fa fa-plus"></i> Insert</a></li>
+                                <li><a href="editexam.html"><i class="fa fa-edit"></i> Edit</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-road"></i> Thesis Supervision <b class="caret"></b></a>              
+                            <ul class="dropdown-menu">
+                                <li><a href="thesup.html"><i class="fa fa-list"></i> List</a></li>
+                                <li><a href="addsup.html"><i class="fa fa-plus"></i> Insert</a></li>
+                                <li><a href="editsup.html"><i class="fa fa-edit"></i> Edit</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" ><i class="fa fa-tasks"></i> Teaching <b class="caret"></b></a>              
+                            <ul class="dropdown-menu collapse in">
+                                <li><a href="teaching.html"><i class="fa fa-list"></i> List courses</a></li>
+                                <li><a class="active" href="disciplines.html"><i class="fa fa-edit"></i> Disciplines</a></li>
+                                <li><a href="content.html"><i class="fa fa-file"></i> Content</a></li>                                
+                            </ul>
+                        </li>
+                        
+                        <li class="dropdown" id="adminpanel">              
+                        </li>
+                    </ul>
+                    
+                    <!-- User toolbar -->
+                    <ul class="nav navbar-nav navbar-right navbar-user">                        
+                        <li class="dropdown user-dropdown"  id="dyn_user">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="myprofile.html"><i class="fa fa-user"></i> Profile</a></li>
+                                <li><a href="editprofile.hmtl"><i class="fa fa-edit"></i> Edit Personal Info </a></li>              
+                                <li class="divider"></li>
+                                <li><a href="#"><i class="fa fa-power-off"></i> Log Out</a></li>
+                                <li><a href="#"><i class="fa fa-question"></i> Support</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </nav>
+            
+            <div id="page-wrapper">
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1>Disciplines</h1>
+                        <ol class="breadcrumb text-right">
+                            <a onclick="$('#xml').toggle()" class="text-right">Upload XML</a>
+                            <div id="xml" style="display:none;">
+                                <input type="file" id="zipfile" style="display:initial;"/>                 
+                                <button class="btn btn-success btn-xs" type="button" onclick="teachxml()">Upload</button>                
+                            </div>              
+                        </ol>           
+                    </div>
+                </div><!-- /.row -->
+                
+                
+                <!-- _____________________________________________ Disciplines _______________________________________________________ -->
+                <div class="row"> 
+                    
+                    <div class="col-lg-12"> 
+                        <form role="form" enctype="multipart/form-data" id="form_disciplines" > 
+                            
+                            <div class ="col-lg-4">
+                                <legend class="text-left"></legend>
+                                <label for="disciplineselect">Discipline</label>
+                                <div class="form-group" id="disciplineselect">
+                                    <select id='discicplineselectid' class="form-control" multiple="" style="height: 250px;" >
+                                    </select>
+                                </div>
+                                
+                                <div class="text-right">
+                                    <button class="btn btn-primary btn-xs" type="button" onclick="adddiscipline_form('php/disciplines.php', 'disciplinecontent','adddiscipline_form')">+ Create</button>
+                                    <button class="btn btn-danger btn-xs" type="button" onclick="removediscipline('php/disciplines.php', 'disciplinecontent','removediscipline', document.getElementById('discicplineselectid').value)">
+                                        - Remove
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class ="col-lg-8" >
+                                <div id="disciplinecontent">
+                                    <legend class="text-left"></legend>
+                                    
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <label>Name</label>
+                                            <input class="form-control" name="name" id="name" type="text" required=""/>              
+                                        </div>
+                                        
+                                        <div class="col-lg-3">
+                                            <label>Academic year</label>
+                                            <input class="form-control" name="academicyear" id="academicyear" type="text" placeholder="ex: 2013/2014" required=""/>              
+                                        </div>
+                                    </div>
+                                    
+                                    <br/>
+                                    
+                                    <div class="row">
+                                        <div class="col-lg-2">
+                                            <label>Course year</label>
+                                            <input class="form-control" name="courseyear" id="courseyear" type="number" min="1" max="9" value="5"/>              
+                                        </div>
+                                        
+                                        <div class="col-lg-3">
+                                            <label>Number of students</label>
+                                            <input class="form-control" name="studentsnumber" id="studentsnumber" type="number" min="1" max="200"/>              
+                                        </div>              
+                                    </div>
+                                    
+                                    <br/>
+                                    
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <label>Institution</label>
+                                            <input class="form-control" name="inst" id="inst" type="text"/>
+                                        </div>
+                                        
+                                        <div class="col-lg-5">
+                                            <label>Course name</label>
+                                            <input class="form-control" name="course" id="course" type="text"/>
+                                        </div>              
+                                    </div>
+                                    
+                                    <br/>
+                                    <div class="text-left">
+                                        <button class="btn btn-success btn-xs" type="button" onclick="insertdiscipline('php/disciplines.php', 'disciplinecontent')">Insert</button>
+                                    </div>
+                                    
+                                </div>                
+                            </div>
+                        </form>
+                        <!-- Modal -->
+                        <div class="modal fade bs-modal-sm" id="loadingmsg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">               
+                                    <div class="modal-body text-center">
+                                        Uploading...
+                                    </div>                
+                                </div>
+                            </div>
+                        </div>
+                    </div>        
+                </div>
+                
+                
+                
+            </div><!-- /#page-wrapper -->
+            
+        </div><!-- /#wrapper -->
+        
+        <!-- JavaScript -->
+        <script src="js/jquery-1.10.2.js"></script>
+        <script src="js/bootstrap.js"></script>        
+        <script src="js/functions.js"></script>
+        <script src="js/cookies.js"></script>
+        
+        <!-- Page Specific Plugins -->
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+        <script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
+        <script src="js/morris/chart-data-morris.js"></script>
+        <script src="js/tablesorter/jquery.tablesorter.js"></script>
+        <script src="js/tablesorter/tables.js"></script>
+        <!--[if lte IE 8]><script src="js/excanvas.min.js"></script><![endif]-->
+        <script src="js/flot/jquery.flot.js"></script>
+        <script src="js/flot/jquery.flot.tooltip.min.js"></script>
+        <script src="js/flot/jquery.flot.resize.js"></script>
+        <script src="js/flot/jquery.flot.pie.js"></script>
+        <script src="js/flot/chart-data-flot.js"></script>
+                   
+    </body>
+</html>
